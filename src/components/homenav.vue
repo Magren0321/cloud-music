@@ -3,7 +3,7 @@
     <div class="bulleted">
       <v-icon medium>mdi-format-list-bulleted</v-icon>
     </div>
-    <ul class="nav-list">
+     <ul class="nav-list">
       <li>我的</li>
       <li>发现</li>
       <li>视频</li>
@@ -26,10 +26,10 @@ export default class Homenav extends Vue {
 <style scoped>
 .wrap{
   display: flex;
-  width: 100%;
+  width: 10 0%;
 }
 .bulleted{
-  margin-left: 5px;
+  margin-left: 10px;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -50,7 +50,7 @@ export default class Homenav extends Vue {
   color:#969292;
 }
 .magnify{
-  margin-right: 5px;
+  margin-right: 10px;
   flex:3;
   display: flex;
   justify-content: flex-end;

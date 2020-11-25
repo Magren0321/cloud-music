@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" @click="isLogin">
     <img :src="avatar">
     <div class="account-name">
         <p id="name">{{name}}</p>
@@ -17,9 +17,23 @@ import { Component, Vue } from 'vue-property-decorator';
   },
 })
 export default class MyHead extends Vue {
-  avatar = require('@/assets/account.png')
-  name = "请登录"
-  level = " "
+  avatar = require('@/assets/account.png');
+  name = "请登录";
+  level = " ";
+
+  isLogin(): void{
+    if(this.$store.getters.LOGIN_STATE){
+      console.log("已经登录");
+    }else{
+      this.toLoginPage();
+    }
+  }
+
+  toLoginPage(): void{
+    this.$router.push({
+      path:'/login'
+    })
+  }
 }
 </script>
 
