@@ -3,7 +3,6 @@
     <img :src="avatar">
     <div class="account-name">
         <p id="name">{{name}}</p>
-        <p>{{level}}</p>
     </div>
   </div>
 </template>
@@ -18,11 +17,10 @@ import { Component, Vue } from 'vue-property-decorator';
 })
 export default class MyHead extends Vue {
   avatar = require('@/assets/account.png');
-  name = "请登录";
-  level = " ";
+  name: string|null = "请登录";
 
   isLogin(): void{
-    if(this.$store.getters.LOGIN_STATE){
+    if(localStorage.getItem('accountUid')!=null){
       console.log("已经登录");
     }else{
       this.toLoginPage();
@@ -34,6 +32,14 @@ export default class MyHead extends Vue {
       path:'/login'
     })
   }
+
+  mounted () {
+     if(localStorage.getItem('accountUid')!=null){
+       this.name = localStorage.getItem('nickname');
+       this.avatar = localStorage.getItem('avatarUrl')
+    }
+  }
+  
 }
 </script>
 

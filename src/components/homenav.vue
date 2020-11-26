@@ -4,9 +4,9 @@
       <v-icon medium>mdi-format-list-bulleted</v-icon>
     </div>
      <ul class="nav-list">
-      <li>我的</li>
-      <li>发现</li>
-      <li>视频</li>
+      <li @click="changeTab('my')">我的</li>
+      <li @click="changeTab('find')">发现</li>
+      <li @click="changeTab('movie')">视频</li>
     </ul>
     <div class="magnify">
       <v-icon medium>mdi-magnify</v-icon>
@@ -15,10 +15,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Emit, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Homenav extends Vue {
+
+  tab = 'my';
+
+  changeTab(res: string): void{
+    this.tab = res;
+    this.chooseTab();
+  }
+
+  @Emit()
+  private chooseTab(){
+    return this.tab;
+  }
   
 }
 </script>

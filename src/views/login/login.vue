@@ -55,18 +55,27 @@ export default class Login extends Vue {
     api.phoneLogin(phoneNumber,this.password).then((res: object|any)=>{
       this.timer = setTimeout(()=>{
         this.isLogining = false;
-      },1500);
+      },2000);
       if(res.data.code!=200){
         window.alert(res.data.message);
       }else{
-        // 存取用户信息
+        // 获取用户信息
         const accountInfo = res.data.profile;
-        const userId = res.data.profile.userId
+        const userId = accountInfo.userId
         this.$store.commit('LOGIN_STATE',true);
         this.$store.commit('ACCOUNT_UID',userId);
-        console.log(this.$store.state)
+        //使用LocalStorage存入用户信息；
+        localStorage.setItem('avatarUrl', accountInfo.avatarUrl)
+        localStorage.setItem('nickname', accountInfo.nickname)
+        localStorage.setItem('accountUid', userId)
+        this.loginSuccess();
       }
-      console.log(res);
+    })
+  }
+
+  loginSuccess(): void{
+    this.$router.push({
+      path: '/'
     })
   }
 

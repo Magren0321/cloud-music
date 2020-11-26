@@ -5,7 +5,7 @@ export default{
         state.loginState = isLogin
     },
     [types.ACCOUNT_UID](state:object|any,ACCOUNT_UID:number){
-        state.accoutUid = ACCOUNT_UID
+        state.accountUid = ACCOUNT_UID
     },
     [types.NAVIGATION_DRAWERS](state:object|any,showDrawers:boolean){
         state.navigationDrawers = showDrawers

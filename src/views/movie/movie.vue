@@ -1,6 +1,6 @@
 <template>
   <div>
-    发现
+    视频
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import { Component, Vue } from 'vue-property-decorator';
     
   },
 })
-export default class Find extends Vue {
+export default class Movie extends Vue {
   
 }
 </script>
