@@ -34,6 +34,7 @@ export default class MyHead extends Vue {
   }
 
   mounted () {
+    //从localStorage中读取账户信息
      if(localStorage.getItem('accountUid')!=null){
        this.name = localStorage.getItem('nickname');
        this.avatar = localStorage.getItem('avatarUrl')
@@ -67,5 +68,6 @@ export default class MyHead extends Vue {
 #name{
     font-size: 18px;
     font-weight: bold;
+    overflow:hidden;
 }
 </style>

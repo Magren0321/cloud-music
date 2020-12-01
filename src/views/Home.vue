@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <home-nav @choose-tab="changeCom"></home-nav>
+    <home-nav></home-nav>
      <div :is="currentView"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import  HomeNav  from '@/components/homenav.vue'
 import my from './my/my.vue'
 import find from './find/find.vue'
@@ -22,12 +22,11 @@ import movie from './movie/movie.vue'
 })
 export default class Home extends Vue {
   currentView = 'my'
-
-  private changeCom(val: string) {
-      // val: 子组件传过来的值
-     this.currentView = val;
-
-     console.log(val);
+  
+  //监听vuex中的homeTab并进行组件切换
+  @Watch('$store.state.homeTab')
+  changeTab(){
+    this.currentView = this.$store.state.homeTab;
   }
 }
 </script>

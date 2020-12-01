@@ -23,7 +23,7 @@ export default class Homenav extends Vue {
   isFind = false;
   isMovie = false;
   tab = 'my';
-
+  //点击后更改样式
   changeTab(res: string): void{
     if(res=='my'){
       this.isMy = true;
@@ -42,9 +42,9 @@ export default class Homenav extends Vue {
     this.chooseTab();
   }
 
-  @Emit()
-  private chooseTab(){
-    return this.tab;
+
+  chooseTab(){
+    this.$store.commit('HOME_TAB',this.tab);
   }
   
 }

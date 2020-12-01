@@ -9,5 +9,8 @@ export default{
     },
     [types.NAVIGATION_DRAWERS](state:object|any,showDrawers:boolean){
         state.navigationDrawers = showDrawers
+    },
+    [types.HOME_TAB](state:object|any,tab:string){
+        state.homeTab = tab;
     }
 }
