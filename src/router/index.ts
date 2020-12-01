@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/login/login.vue'
+
+const Home = () => import('../views/Home.vue')
+const Login = () => import ('../views/login/login.vue')
+const SongListInfo = () => import('../views/songListInfo/songListInfo.vue')
 
 Vue.use(VueRouter)
 
@@ -15,7 +17,11 @@ const routes: Array<RouteConfig> = [
     path:'/login',
     name: 'Login',
     component: Login
-  }
+  },{
+    path:'/songlist',
+    name:'songlist',
+    component: SongListInfo
+  },
 ]
 
 const router = new VueRouter({

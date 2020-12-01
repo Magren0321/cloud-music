@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import api from '@/api/index'
+import api from '@/api/index';
 
 @Component({
   components: {

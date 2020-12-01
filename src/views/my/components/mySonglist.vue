@@ -1,5 +1,9 @@
 <template>
   <div class="wrap">
+    <v-dialog
+        v-model="dialog">
+        <create-dialog></create-dialog>
+    </v-dialog>
     <div class="mylike">
         <img :src="likeImg">
         <div class="like-information">
@@ -10,7 +14,9 @@
     <div class="mycreate">
         <div class = "createTitle">
             <p>创建歌单({{createIndex}}个)</p>
-            <v-icon id="createAdd">mdi-plus</v-icon>
+            <div @click="dialog=true">
+                <v-icon id="createAdd">mdi-plus</v-icon>
+            </div>
         </div>
         <div class="songlist">
             <p v-show="!ifCreateSonglist" class="noSonglist">暂无歌单</p>
@@ -48,12 +54,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import api from '@/api/index'
+import createDialog from './createSonglistDialog.vue'
 
 @Component({
   components: {
-    
+    createDialog,
   },
 })
 export default class MySongList extends Vue {
@@ -66,12 +73,23 @@ export default class MySongList extends Vue {
     ifStarSonglist = false; //是否有收藏的歌单
     createSonglist: any[] = []; //创建的歌单列表
     starSonglist: any[] = []; //收藏的歌单列表
+    dialog = false;
 
+    createList(): void{
+        console.log("创建歌单")
+    }
     modifySonglist(): void{
         console.log("编辑歌单");
     }
     toSonglistPage(): void{
         console.log("进入歌单页面");
+    }
+
+
+    @Watch('$store.state.createSonglistDialog')
+    showDialog(){
+        console.log("变了")
+        this.dialog = this.$store.getters.CREATE_SONGLIST_DIALOG;
     }
 
     mounted () {

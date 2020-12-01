@@ -23,5 +23,23 @@ export default{
             method:'get'
         })
     },
+    /**
+     * 创建歌单
+     * @param name 歌单名字
+     * @param privacy 是否隐私
+     */
+    createSonglist(name: string,privacy?: boolean){
+        if(privacy){
+            return axios({
+                url:config.createSonglist+"?name="+name+"&privacy=10",
+                method:'get'
+            })
+        }else{
+            return axios({
+                url:config.createSonglist+"?name="+name,
+                method:'get'
+            })
+        }
+    }
 
 }

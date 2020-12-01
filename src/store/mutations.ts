@@ -12,5 +12,5 @@ export default{
     },
     [types.HOME_TAB](state:object|any,tab:string){
         state.homeTab = tab;
-    }
+    },
 }

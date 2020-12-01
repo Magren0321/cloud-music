@@ -26,7 +26,7 @@ export default class Home extends Vue {
   //监听vuex中的homeTab并进行组件切换
   @Watch('$store.state.homeTab')
   changeTab(){
-    this.currentView = this.$store.state.homeTab;
+    this.currentView =  this.$store.getters.HOME_TAB;
   }
 }
 </script>
