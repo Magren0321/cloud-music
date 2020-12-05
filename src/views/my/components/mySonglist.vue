@@ -1,10 +1,14 @@
 <template>
+<div>
+  <v-overlay :value="overlay">
+    <modify-songlist-dialog v-show="overlay" v-clickoutside="outside" ></modify-songlist-dialog>
+  </v-overlay>
   <div class="wrap">
     <v-dialog
         v-model="dialog">
         <create-dialog></create-dialog>
     </v-dialog>
-    <div class="mylike">
+    <div class="mylike" @click="toSonglistPage(likeSonglist.id,likeSonglist.name)">
         <img :src="likeImg">
         <div class="like-information">
             <p>我喜欢的音乐</p>
@@ -20,7 +24,7 @@
         </div>
         <div class="songlist">
             <p v-show="!ifCreateSonglist" class="noSonglist">暂无歌单</p>
-            <div v-for="item in createSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage()">
+            <div v-for="item in createSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage(item.id,item.name)">
                 <img :src="item.coverImgUrl">
                 <div class="songlist_info_p">
                     <p>{{item.name}}</p><br>
@@ -38,7 +42,7 @@
         </div>
         <div class="songlist">
             <p v-show="!ifStarSonglist" class="noSonglist">暂无歌单</p>
-            <div v-for="item in starSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage()">
+            <div v-for="item in starSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage(item.id,item.name)">
                 <img :src="item.coverImgUrl">
                 <div class="songlist_info_p">
                     <p>{{item.name}}</p><br>
@@ -51,18 +55,26 @@
         </div>
     </div>
   </div>
+</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue} from 'vue-property-decorator';
 import api from '@/api/index'
 import createDialog from './createSonglistDialog.vue'
+import clickoutside from '@/utils/clickoutside'
+import modifySonglistDialog from './modifySonglistDialog.vue'
 
 @Component({
-  components: {
-    createDialog,
-  },
+    directives:{
+        clickoutside,
+    },
+    components: {
+        modifySonglistDialog,
+        createDialog,
+    },
 })
+
 export default class MySongList extends Vue {
     likeImg = require('@/assets/like.png');
     likeSonglist!: object|any; //我喜欢的音乐
@@ -73,23 +85,27 @@ export default class MySongList extends Vue {
     ifStarSonglist = false; //是否有收藏的歌单
     createSonglist: any[] = []; //创建的歌单列表
     starSonglist: any[] = []; //收藏的歌单列表
-    dialog = false;
-
-    createList(): void{
-        console.log("创建歌单")
-    }
+    dialog = false; //创建歌单dialog
+    overlay = false;
+   
+   //当点击的不是歌单编辑的dialog的时候调用
+   outside(){
+       this.overlay = false;
+   }
+   //点击歌单编辑
     modifySonglist(): void{
-        console.log("编辑歌单");
+        this.overlay = true;
     }
-    toSonglistPage(): void{
-        console.log("进入歌单页面");
-    }
-
-
-    @Watch('$store.state.createSonglistDialog')
-    showDialog(){
-        console.log("变了")
-        this.dialog = this.$store.getters.CREATE_SONGLIST_DIALOG;
+    //跳转到歌单详情页，传递歌单id
+    toSonglistPage(id: number,name: string): void{
+        const songlistId = id.toString();
+        this.$router.push({
+            name:'songlist',
+            params:{
+                id:songlistId,
+                name:name
+            }
+        })
     }
 
     mounted () {
@@ -118,8 +134,7 @@ export default class MySongList extends Vue {
             });
         }
     }
-
-  
+    
 }
 </script>
 

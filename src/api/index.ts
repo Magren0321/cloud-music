@@ -40,6 +40,16 @@ export default{
                 method:'get'
             })
         }
-    }
+    },
+    /**
+     * 获取歌单详情
+     * @param id 歌单id
+     */
+    getSonglistInfo(id: string){
+        return axios({
+            url: config.getSonglistInfo+"?id="+id,
+            method: 'get'
+        })
+    },
 
 }
