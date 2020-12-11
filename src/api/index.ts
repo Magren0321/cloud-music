@@ -51,5 +51,26 @@ export default{
             method: 'get'
         })
     },
+    /**
+     * 删除创建的歌单
+     * @param id 歌单id
+     */
+    deleteSonglist(id: number){
+        return axios({
+            url: config.deleteSonglist+'?id='+id,
+            method: 'get'
+        })
+    },
+    /**
+     * 收藏/取消收藏歌单
+     * @param id 歌单id
+     * @param t  类型,1:收藏,2:取消收藏
+     */
+    subscribeSonglist(id: number,t: number){
+        return axios({
+            url: config.subscribeSonglist+'?t='+t+'&id='+id,
+            method: 'get'
+        })
+    },
 
 }

@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-overlay :value="overlay">
-    <modify-songlist-dialog v-show="overlay" v-clickoutside="outside" ></modify-songlist-dialog>
+    <modify-songlist-dialog v-show="overlay" v-clickoutside="outside" :id='modifySonglistId' :isStar='isStar'></modify-songlist-dialog>
   </v-overlay>
   <div class="wrap">
     <v-dialog
@@ -30,7 +30,7 @@
                     <p>{{item.name}}</p><br>
                     <p style="color:#BEBEBE">{{item.trackCount}}首</p>
                 </div>
-                <div class="mod_songlist" @click="modifySonglist()"  onClick="event.cancelBubble = true">
+                <div class="mod_songlist" @click.stop="modifySonglist(false,item.id)"  onClick="event.cancelBubble = true">
                     <v-icon medium>mdi-dots-vertical</v-icon>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <p>{{item.name}}</p><br>
                     <p style="color:#BEBEBE">{{item.trackCount}}首</p>
                 </div>
-                <div class="mod_songlist" @click="modifySonglist()"  onClick="event.cancelBubble = true">
+                <div class="mod_songlist" @click.stop="modifySonglist(true,item.id)">
                     <v-icon medium>mdi-dots-vertical</v-icon>
                 </div>
             </div>
@@ -86,15 +86,19 @@ export default class MySongList extends Vue {
     createSonglist: any[] = []; //创建的歌单列表
     starSonglist: any[] = []; //收藏的歌单列表
     dialog = false; //创建歌单dialog
-    overlay = false;
+    overlay = false; //编辑歌单dialog
+    isStar = false;  //编辑的是否是自己创建的歌单
+    modifySonglistId = 0; //编辑的歌单id
    
    //当点击的不是歌单编辑的dialog的时候调用
    outside(){
        this.overlay = false;
    }
    //点击歌单编辑
-    modifySonglist(): void{
+    modifySonglist(isStar: boolean,songlistId: number): void{
         this.overlay = true;
+        this.isStar = isStar;
+        this.modifySonglistId = songlistId;
     }
     //跳转到歌单详情页，传递歌单id
     toSonglistPage(id: number,name: string): void{
