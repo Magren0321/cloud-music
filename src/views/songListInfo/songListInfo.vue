@@ -31,8 +31,8 @@ import api from '@/api/index'
 export default class SongListInfo extends Vue {
   title = "歌单";
   songImg = require('@/assets/like.png');
-  songListName = "歌单名称";
-  songListCreator = "创建者";
+  songListName = "歌单名称";  //歌单名称
+  songListCreator = "创建者"; //歌单创建者
   songlist: any[] = []; //歌单
 
   returnPage(): void{
