@@ -1,3 +1,4 @@
+import state from './state';
 import * as types from './types';
 
 export default{
