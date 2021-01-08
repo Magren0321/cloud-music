@@ -20,6 +20,7 @@
         <p>播放全部</p>
       </div>
 
+      <div v-bind:class="{songlistfixed:isMorethen193}">
       <div class="songlist" v-for="(item,index) in songlist" :key="item.id">
         <div class="songlistIndex">
           <p>{{index+1}}</p>
@@ -30,6 +31,7 @@
         <div class="mod_songlist">
               <v-icon medium>mdi-dots-vertical</v-icon>
         </div>
+      </div>
       </div>
 
   </div>
@@ -65,7 +67,7 @@ export default class SongListInfo extends Vue {
     }else{
       this.title = "歌单"
     }
-    if(this.scroll>=193){
+    if(this.scroll>=190){
       this.isMorethen193 = true;
     }else{
       this.isMorethen193 = false;
@@ -114,7 +116,7 @@ p{
   line-height: 40px;
   margin-left: 10px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 17px;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
@@ -156,6 +158,7 @@ p{
   border-color: #CFC8C6;
   padding: 5px;
   width: 100%;
+  background-color: #fff;
 }
 .playallfixed{
   position: fixed;
@@ -172,6 +175,9 @@ p{
   margin-top: 10px;
   display: flex;
   justify-content: space-around;
+}
+.songlistfixed{
+  margin-top: 55px;
 }
 .songlistIndex{
   width: 40px;
