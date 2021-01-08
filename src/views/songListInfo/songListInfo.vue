@@ -13,9 +13,13 @@
           </div>
         </div>
       </div>
-      <div>
-        <v-icon medium>mdi-play-circle-outline</v-icon>
+
+      
+      <div class="playall" v-bind:class="{playallfixed:isMorethen193}">
+        <v-icon large>mdi-play-circle-outline</v-icon>
+        <p>播放全部</p>
       </div>
+
       <div class="songlist" v-for="(item,index) in songlist" :key="item.id">
         <div class="songlistIndex">
           <p>{{index+1}}</p>
@@ -27,7 +31,7 @@
               <v-icon medium>mdi-dots-vertical</v-icon>
         </div>
       </div>
-      
+
   </div>
 </template>
 
@@ -47,43 +51,74 @@ export default class SongListInfo extends Vue {
   songListCreator = "创建者"; //歌单创建者
   creatorId = ''; //创建者id
   songlist: any[] = []; //歌单
+  scroll = 0; //页面滚动的高度
+  isMorethen193 = false; //判断页面是否滚动到了全部播放
 
   returnPage(): void{
     this.$router.go(-1);
   };
   
-  mounted () {
-    if(this.$route.params.id == undefined){
-      this.returnPage();
+  handleScroll(){
+    this.scroll = document.documentElement.scrollTop||document.body.scrollTop;
+    if(this.scroll>40){
+      this.title = this.songListName;
+    }else{
+      this.title = "歌单"
     }
+    if(this.scroll>=193){
+      this.isMorethen193 = true;
+    }else{
+      this.isMorethen193 = false;
+    }
+  }
+
+  destroyed(){
+    window.removeEventListener('scroll',this.handleScroll)
+  }
+
+  mounted () {
+    //页面刷新无法获取传递过来的参数，同时store也会刷新，暂且先返回首页
+    if(this.$route.params.id == undefined){
+      this.$router.push('/')
+    }else{
     //获取歌单详情
-    api.getSonglistInfo(this.$route.params.id).then((res: object|any)=>{
-      console.log(res);
-      this.songImg = res.data.playlist.coverImgUrl;
-      this.songListCreator = res.data.playlist.creator.nickname;
-      this.songListName = res.data.playlist.name;
-      this.creatorId = res.data.playlist.creator.userId;
-      this.songlist = res.data.playlist.tracks;
-    });
-    
-       
+      api.getSonglistInfo(this.$route.params.id).then((res: object|any)=>{
+        console.log(res);
+        this.songImg = res.data.playlist.coverImgUrl;
+        this.songListCreator = res.data.playlist.creator.nickname;
+        this.songListName = res.data.playlist.name;
+        this.creatorId = res.data.playlist.creator.userId;
+        this.songlist = res.data.playlist.tracks;
+      });
+      window.addEventListener('scroll',this.handleScroll)
+    }
   }
 }
 </script>
 
 <style scoped>
+p{
+  padding: 0;
+  margin: 0;
+}
 .tab{
   display: flex;
   background-color: #F3350C;
   height: 40px;
   width: 100%;
+  z-index: 10;
+  position:fixed;
+  top: 0;
 }
 .tab p{
   line-height: 40px;
   margin-left: 10px;
   font-weight: bold;
-  font-size: 21px;
+  font-size: 20px;
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .songlist_info{
   display: flex;
@@ -91,6 +126,7 @@ export default class SongListInfo extends Vue {
   background-color:#F3350C;
   min-height: 200px;
   width: 100%;
+  margin-top: 30px;
 }
 .songlist_info img{
   width: 100px;
@@ -109,37 +145,50 @@ export default class SongListInfo extends Vue {
 #creatorName{
   color: #fff;
   font-size: 13px;
-
+  margin-top: 10px;
+}
+.playall{
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #CFC8C6;
+  padding: 5px;
+  width: 100%;
+}
+.playallfixed{
+  position: fixed;
+  top: 40px;
+}
+.playall p{
+  font-size: 17px;
+  font-weight: bold;
+  margin-left: 5px;
 }
 .songlist{
-  display: flex;
   align-items: center;
   height: 50px;
   margin-top: 10px;
-}
-.songlist p{
-  margin: 0;
-  padding: 0;
+  display: flex;
+  justify-content: space-around;
 }
 .songlistIndex{
   width: 40px;
   margin-left: 10px;
+
 }
 .songlistIndex p{
   color: #CFC8C6;
 }
 .songlistName{
-  width: 79%;
-  
+  width: 70%;
 }
 .songlistName p{
-  font-size: 20px;
-
+  font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mod_song{
-  width: 20px;
-}
+
 </style>
