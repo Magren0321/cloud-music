@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <home-nav></home-nav>
-     <div :is="currentView"></div>
+     <div :is="currentView" class="content"></div>
+     <play-tab></play-tab>
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import  HomeNav  from '@/components/homenav.vue'
 import my from './my/my.vue'
 import find from './find/find.vue'
 import movie from './movie/movie.vue'
+import playTab from '@/components/playTab.vue'
 
 @Component({
   components: {
@@ -18,6 +20,7 @@ import movie from './movie/movie.vue'
     my,
     find,
     movie,
+    playTab,
   },
 })
 export default class Home extends Vue {
@@ -35,5 +38,8 @@ export default class Home extends Vue {
 .home{
   background-color:#F1F1F1;
   height: 100%;
+}
+.content{
+  margin-bottom: 25px;
 }
 </style>

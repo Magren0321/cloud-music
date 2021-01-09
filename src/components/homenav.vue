@@ -1,3 +1,4 @@
+<!--首页的tab栏-->
 <template>
   <div class="wrap">
     <div class="bulleted">
@@ -54,6 +55,11 @@ export default class Homenav extends Vue {
 .wrap{
   display: flex;
   width: 10 0%;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 9;
+  background-color:#F1F1F1;
 }
 .bulleted{
   margin-left: 10px;

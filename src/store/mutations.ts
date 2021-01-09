@@ -14,4 +14,7 @@ export default{
     [types.HOME_TAB](state:object|any,tab:string){
         state.homeTab = tab;
     },
+    [types.SHOW_PLAYPAGE](state:object|any,isShow: boolean){
+        state.showPlayPage = isShow;
+    }
 }
