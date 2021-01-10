@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-overlay :value="overlay">
+  <v-overlay :value="overlay" class="Voverlay">
     <modify-songlist-dialog v-show="overlay" v-clickoutside="outside" :id='modifySonglistId' :isStar='isStar'></modify-songlist-dialog>
   </v-overlay>
   <div class="wrap">
@@ -223,5 +223,8 @@ export default class MySongList extends Vue {
 }
 .mod_songlist{
     flex: 1;
+}
+.Voverlay{
+    z-index: 99!important;
 }
 </style>

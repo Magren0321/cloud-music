@@ -19,5 +19,8 @@ export default Vue.extend({
   data: () => ({
     //
   }),
+  methods:{
+    
+  },
 });
 </script>

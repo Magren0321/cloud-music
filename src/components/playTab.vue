@@ -1,6 +1,6 @@
 <!--页面底部的播放tab-->
 <template>
-  <div class="wrap">
+  <div class="wrap" @click="showPlayPage(true)">
     
   </div>
 </template>
@@ -11,6 +11,11 @@ import { Component, Emit, Vue } from 'vue-property-decorator';
 @Component
 export default class PlayTab extends Vue {
   
+
+  showPlayPage(isShow: boolean): void{
+    console.log("xx")
+    this.$store.commit("SHOW_PLAYPAGE",isShow);
+  }
   
 }
 </script>
