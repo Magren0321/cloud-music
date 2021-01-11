@@ -13,7 +13,6 @@ export default class PlayTab extends Vue {
   
 
   showPlayPage(isShow: boolean): void{
-    console.log("xx")
     this.$store.commit("SHOW_PLAYPAGE",isShow);
   }
   
