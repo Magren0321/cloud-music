@@ -215,11 +215,15 @@ export default class MySongList extends Vue {
     flex: 9;
     overflow:hidden;
     margin-left: 10px;
-    white-space: nowrap;
 }
 .songlist_info_p p{
     margin: 0;
+    width: 100%;
+    text-align: left;
     float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .mod_songlist{
     flex: 1;

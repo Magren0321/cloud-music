@@ -10,7 +10,13 @@
     </div>
     <div class="schedule">
       <p>{{playingTime}}</p>
-    
+      <div class="bar">
+        <v-slider
+        hide-details
+        max = "50"
+        min = "-50"
+        ></v-slider>
+      </div>
       <p>{{endTime}}</p>
     </div>
   </div>
@@ -35,8 +41,10 @@ export default class PlayPage extends Vue {
 
 <style scoped>
 .wrap{
+  position: fixed;
   z-index: 99;
   background: rgba(0, 0, 0, 0.6);
+  width: 100%;
   height: 100vh;
 }
 .tab{
@@ -98,6 +106,11 @@ export default class PlayPage extends Vue {
 }
 .schedule{
   display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
-
+.bar{
+  width: 80%;
+ 
+}
 </style>

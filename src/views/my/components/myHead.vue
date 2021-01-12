@@ -48,7 +48,7 @@ export default class MyHead extends Vue {
 .wrap{
     width: 90%;
     margin-left:5%;
-    margin-top: 49.6px;
+    padding-top: 55px;
     display: flex;
 }
 .wrap img{
