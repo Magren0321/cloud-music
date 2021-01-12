@@ -12,12 +12,22 @@
       <p>{{playingTime}}</p>
       <div class="bar">
         <v-slider
+        color="red"
+        track-color="#CFC8C6"
+        v-model = 'barValue'
         hide-details
         max = "50"
         min = "-50"
         ></v-slider>
       </div>
       <p>{{endTime}}</p>
+    </div>
+    <div class="control">
+      <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
+      <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
+      <v-icon size="8vh" color="#fff">mdi-play-circle-outline</v-icon>
+      <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
+      <v-icon size="5vh" color="#fff">mdi-playlist-music-outline</v-icon>
     </div>
   </div>
 </template>
@@ -31,7 +41,7 @@ export default class PlayPage extends Vue {
     songImg = require("@/assets/like.png");
     playingTime = 'xxx';
     endTime = 'xxx';
-
+    barValue = -50;
     //隐藏播放组件
     hidePlayPage(): void{
       this.$store.commit('SHOW_PLAYPAGE',false);
@@ -109,8 +119,22 @@ export default class PlayPage extends Vue {
   justify-content: space-around;
   width: 100%;
 }
+.schedule p{
+  width: 10%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
 .bar{
   width: 80%;
- 
+}
+.control{
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
 }
 </style>
