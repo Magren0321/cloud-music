@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import playPage from '@/components/playPage.vue'
+import playPage from '@/components/playPage/playPage.vue'
 export default Vue.extend({
   components: {
     playPage
