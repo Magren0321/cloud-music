@@ -21,7 +21,7 @@
       </div>
 
       <div v-bind:class="{songlistfixed:isMorethen193}">
-      <div class="songlist" v-for="(item,index) in songlist" :key="item.id">
+      <div class="songlist" v-for="(item,index) in songlist" :key="item.id" @click="playSong(item.id,index)">
         <div class="songlistIndex">
           <p>{{index+1}}</p>
         </div>
@@ -60,7 +60,8 @@ export default class SongListInfo extends Vue {
     this.$router.go(-1);
   };
   
-  handleScroll(){
+  //监听页面滚动
+  handleScroll(): void{
     this.scroll = document.documentElement.scrollTop||document.body.scrollTop;
     if(this.scroll>40){
       this.title = this.songListName;
@@ -76,6 +77,13 @@ export default class SongListInfo extends Vue {
 
   destroyed(){
     window.removeEventListener('scroll',this.handleScroll)
+  }
+  //将播放的歌曲id以及歌单和该歌曲在歌单中的序号传入到vuex中存储
+  playSong(id: number,index: number): void{
+    this.$store.commit("SONG_LIST",JSON.stringify(this.songlist));
+    this.$store.commit("SONG_ID",id);
+    this.$store.commit("SONG_INDEX",index+1);
+    this.$store.commit("SHOW_PLAYPAGE",true);    
   }
 
   mounted () {

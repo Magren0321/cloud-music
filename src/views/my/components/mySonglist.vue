@@ -117,7 +117,6 @@ export default class MySongList extends Vue {
         const uid = localStorage.getItem('accountUid');
         if(uid!=null){
             api.getSonglist(uid).then((res: object|any)=>{
-                console.log(res)
                 this.likeSonglist = res.data.playlist[0];
                 for(let i = 1;i<res.data.playlist.length;i++){
                     if(res.data.playlist[i].subscribed == false){

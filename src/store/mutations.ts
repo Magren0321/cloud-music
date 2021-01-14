@@ -16,5 +16,14 @@ export default{
     },
     [types.SHOW_PLAYPAGE](state:object|any,isShow: boolean){
         state.showPlayPage = isShow;
-    }
+    },
+    [types.SONG_ID](state:object|any,songId: number){
+        state.songId = songId;
+    },
+    [types.SONG_LIST](state:object|any,songlist: string){
+        state.songList = songlist;
+    },
+    [types.SONG_INDEX](state:object|any,index: number){
+        state.songIndex = index;
+    },
 }

@@ -50,8 +50,8 @@ import { Component,  Vue } from 'vue-property-decorator';
 export default class PlayPage extends Vue {
     title = '歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单';
     songImg = require("@/assets/like.png");
-    playingTime = 'xxx';
-    endTime = 'xxx';
+    playingTime = '00:00';
+    endTime = '00:00';
     barValue = -50;
     audioUrl = '';
     //隐藏播放组件
@@ -132,9 +132,9 @@ export default class PlayPage extends Vue {
   width: 100%;
 }
 .schedule p{
-  width: 10%;
-  margin: 0;
+  width: 15%;
   padding: 0;
+  margin: 5px 0 0 0;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -142,7 +142,7 @@ export default class PlayPage extends Vue {
   color: #fff;
 }
 .bar{
-  width: 80%;
+  width: 70%;
 }
 .control{
   margin-top: 20px;

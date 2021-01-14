@@ -72,5 +72,34 @@ export default{
             method: 'get'
         })
     },
-
+    /**
+     * 获取歌曲详情
+     * @param ids 歌曲id
+     */
+    getSongInfo(ids: number){
+        return axios({
+            url: config.getSongInfo+'?ids=' + ids,
+            method: 'get'
+        })
+    },
+    /**
+     * 获取歌曲url
+     * @param id  歌曲id
+     */
+    getSong(id: number){
+        return axios({
+            url: config.getSong+'?id='+id,
+            method: 'get'
+        })
+    },
+    /**
+     * 检查歌曲是否可用
+     * @param id 歌曲id
+     */
+    songAvailable(id: number){
+        return axios({
+            url: config.songAvailable+'?id='+id,
+            method: 'get'
+        })
+    },
 }
