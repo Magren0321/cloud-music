@@ -1,13 +1,22 @@
 <!--播放页面-->
 <template>
   <div class="wrap">
+
+    <audio
+      :src="audioUrl"
+      ref="audio"
+      preload="auto"
+    ></audio>
+
     <div class="tab">
         <v-icon large color="#fff" @click="hidePlayPage()">mdi-arrow-left</v-icon>
         <p>{{title}}</p>
     </div>
+
     <div class="coverImg">
       <img :src="songImg">
     </div>
+
     <div class="schedule">
       <p>{{playingTime}}</p>
       <div class="bar">
@@ -22,6 +31,7 @@
       </div>
       <p>{{endTime}}</p>
     </div>
+
     <div class="control">
       <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
       <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
@@ -29,6 +39,7 @@
       <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
       <v-icon size="5vh" color="#fff">mdi-playlist-music-outline</v-icon>
     </div>
+    
   </div>
 </template>
 
@@ -42,6 +53,7 @@ export default class PlayPage extends Vue {
     playingTime = 'xxx';
     endTime = 'xxx';
     barValue = -50;
+    audioUrl = '';
     //隐藏播放组件
     hidePlayPage(): void{
       this.$store.commit('SHOW_PLAYPAGE',false);
