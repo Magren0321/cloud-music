@@ -6,6 +6,7 @@
       :src="audioUrl"
       ref="audio"
       preload="auto"
+      autoplay
     ></audio>
 
     <div class="tab">
@@ -44,7 +45,8 @@
 </template>
 
 <script lang="ts">
-import { Component,  Vue } from 'vue-property-decorator';
+import { Component,  Vue, Watch } from 'vue-property-decorator';
+import api from '@/api/index';
 
 @Component
 export default class PlayPage extends Vue {
@@ -54,9 +56,29 @@ export default class PlayPage extends Vue {
     endTime = '00:00';
     barValue = -50;
     audioUrl = '';
+    songList = [];
     //隐藏播放组件
     hidePlayPage(): void{
       this.$store.commit('SHOW_PLAYPAGE',false);
+    }
+    //播放可取
+    startPlay(id: number): void{
+      api.getSong(id).then((res: object|any)=>{
+        this.audioUrl = res.data.data[0].url;
+        
+      })
+    }
+    //当选中的歌曲改变时候先检测是否可用
+    @Watch('$store.state.songId')
+    playSong(): void{
+      api.songAvailable(this.$store.state.songId).then((res: object|any)=>{
+        if(res.data.success == true){
+          this.startPlay(this.$store.state.songId); //播放
+          this.songList = JSON.parse(this.$store.state.songList) //获取播放歌曲所在的歌单
+        }else{
+          console.log('歌曲不可用');
+        }
+      })
     }
 }
 </script>
