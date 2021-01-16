@@ -23,7 +23,8 @@
       <div v-bind:class="{songlistfixed:isMorethen193}">
       <div class="songlist" v-for="(item,index) in songlist" :key="item.id" @click="playSong(item.id,index)">
         <div class="songlistIndex">
-          <p>{{index+1}}</p>
+          <v-icon color="red" v-if="index==$store.state.songIndex-1&&songListId==$store.state.songListId">mdi-volume-high</v-icon>
+          <p v-else>{{index+1}}</p>
         </div>
         <div class="songlistName">
            <p>{{item.name}}</p>
@@ -38,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import api from '@/api/index'
 
 @Component({
@@ -51,10 +52,12 @@ export default class SongListInfo extends Vue {
   songImg = require('@/assets/like.png');
   songListName = "歌单名称";  //歌单名称
   songListCreator = "创建者"; //歌单创建者
+  songListId = 0; //歌单id
   creatorId = ''; //创建者id
   songlist: any[] = []; //歌单
   scroll = 0; //页面滚动的高度
   isMorethen193 = false; //判断页面是否滚动到了全部播放
+
 
   returnPage(): void{
     this.$router.go(-1);
@@ -80,10 +83,11 @@ export default class SongListInfo extends Vue {
   }
   //将播放的歌曲id以及歌单和该歌曲在歌单中的序号传入到vuex中存储
   playSong(id: number,index: number): void{
+    //将歌单数组转成json格式存储，否则会是object
     this.$store.commit("SONG_LIST",JSON.stringify(this.songlist));
-    this.$store.commit("SONG_ID",id);
-    this.$store.commit("SONG_INDEX",index+1);
-    this.$store.commit("SHOW_PLAYPAGE",true);    
+    this.$store.commit("SONG_ID",id); //歌曲id
+    this.$store.commit("SONG_INDEX",index+1);  //歌曲位置
+    this.$store.commit("SONGLIST_ID",this.songListId) //播放中的歌单id
   }
 
   mounted () {
@@ -99,10 +103,12 @@ export default class SongListInfo extends Vue {
         this.songListName = res.data.playlist.name;
         this.creatorId = res.data.playlist.creator.userId;
         this.songlist = res.data.playlist.tracks;
+        this.songListId = res.data.playlist.id;
       });
       window.addEventListener('scroll',this.handleScroll)
     }
   }
+
 }
 </script>
 

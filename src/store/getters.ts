@@ -7,6 +7,7 @@ const getters = {
     SONG_ID:(state:object|any)=>state.songId,
     SONG_LIST:(state:object|any)=>state.songList,
     SONG_INDEX:(state:object|any)=>state.songIndex,
+    SONGLIST_ID:(state:object|any)=>state.songListId,
 }
   
 export default getters

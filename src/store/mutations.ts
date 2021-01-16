@@ -26,4 +26,7 @@ export default{
     [types.SONG_INDEX](state:object|any,index: number){
         state.songIndex = index;
     },
+    [types.SONGLIST_ID](state:object|any,id: number){
+        state.songListId = id;
+    },
 }

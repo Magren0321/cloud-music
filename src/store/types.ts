@@ -6,3 +6,4 @@ export const SHOW_PLAYPAGE = "SHOW_PLAYPAGE"; //播放页显示
 export const SONG_ID = "SONG_ID"; //播放中的歌曲
 export const SONG_LIST = "SONG_LIST"; //播放中的歌单
 export const SONG_INDEX = "SONG_INDEX"; //播放的歌曲在歌单中的位置
+export const SONGLIST_ID = "SONGLIST_ID"; //播放中的歌单id
