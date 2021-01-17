@@ -88,7 +88,6 @@ export default class SongListInfo extends Vue {
     this.$store.commit("SONG_ID",id); //歌曲id
     this.$store.commit("SONG_INDEX",index+1);  //歌曲位置
     this.$store.commit("SONGLIST_ID",this.songListId); //播放中的歌单id
-    this.$store.commit("IS_PLAYING",true); //开始播放
     this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
   }
 

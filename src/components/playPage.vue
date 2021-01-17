@@ -41,8 +41,8 @@
         <v-icon size="5vh" color="#DFD6D4" >mdi-play-circle-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff"  @click="changeStatus()">
-        <v-icon size="8vh" color="#DFD6D4" v-show="!isPlaying">mdi-play-circle-outline</v-icon>
-        <v-icon size="8vh" color="#DFD6D4" v-show="isPlaying">mdi-pause-circle-outline</v-icon>
+        <v-icon size="8vh" color="#DFD6D4" v-show="!$store.state.isPlaying">mdi-play-circle-outline</v-icon>
+        <v-icon size="8vh" color="#DFD6D4" v-show="$store.state.isPlaying">mdi-pause-circle-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff">
         <v-icon size="5vh" color="#DFD6D4">mdi-play-circle-outline</v-icon>
@@ -61,14 +61,13 @@ import api from '@/api/index';
 
 @Component
 export default class PlayPage extends Vue {
-    title = '歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单歌单';
+    title = '';
     songImg = require("@/assets/like.png");
     playingTime = '00:00';
     endTime = '00:00';
     barValue = -50; //播放进度
     audioUrl = ''; //播放的url
     songList = []; //播放的歌单
-    isPlaying = false; //播放/暂停
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -78,7 +77,7 @@ export default class PlayPage extends Vue {
     startPlay(id: number): void{
       api.getSong(id).then((res: object|any)=>{
         this.audioUrl = res.data.data[0].url;
-        this.isPlaying = true;
+        this.$store.commit('IS_PLAYING',true);
       })
     }
     //获取歌曲详细信息
@@ -86,18 +85,18 @@ export default class PlayPage extends Vue {
       api.getSongInfo(id).then((res: object|any)=>{
         console.log(res);
         this.songImg = res.data.songs[0].al.picUrl;
+        this.title = res.data.songs[0].name
       })
     }
     //暂停/开始播放
     changeStatus(){
-      if(this.isPlaying){
+      if(this.$store.getters.IS_PLAYING){
         (this.$refs.songAudio as any).pause();
-        this.isPlaying = false;
+        this.$store.commit('IS_PLAYING',false);
       }else{
-        (this.$refs.songAudio as any).start();
-        this.isPlaying = true;
+        (this.$refs.songAudio as any).play();
+        this.$store.commit('IS_PLAYING',true);
       }
-      console.log(this.isPlaying)
     }
     //当选中的歌曲改变时候先检测是否可用
     @Watch('$store.state.songId')
