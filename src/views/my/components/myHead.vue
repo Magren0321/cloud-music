@@ -56,6 +56,7 @@ export default class MyHead extends Vue {
     border-radius: 50px;
     background-color: #fff;
     max-width:50px;
+    max-height: 50px;
 }
 .account-name{
     flex: 7;

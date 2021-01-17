@@ -1,4 +1,3 @@
-import state from './state';
 import * as types from './types';
 
 export default{
@@ -28,5 +27,8 @@ export default{
     },
     [types.SONGLIST_ID](state:object|any,id: number){
         state.songListId = id;
+    },
+    [types.IS_PLAYING](state:object|any,isPlaying: boolean){
+        state.isPlaying = isPlaying
     },
 }

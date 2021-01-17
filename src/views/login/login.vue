@@ -74,7 +74,7 @@ export default class Login extends Vue {
   }
 
   loginSuccess(): void{
-    this.$router.push({
+    this.$router.replace({
       path: '/'
     })
   }

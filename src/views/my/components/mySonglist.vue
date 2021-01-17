@@ -209,6 +209,7 @@ export default class MySongList extends Vue {
     padding-bottom: 10px;
     margin-left: 20px;
     max-width:60px;
+    max-height: 60px;
 }
 .songlist_info_p{
     flex: 9;

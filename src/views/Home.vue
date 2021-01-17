@@ -2,7 +2,7 @@
   <div class="home">
     <home-nav></home-nav>
      <div :is="currentView" class="content"></div>
-     <play-tab></play-tab>
+     <play-tab v-show="$store.state.songIndex!=0"></play-tab>
   </div>
 </template>
 
@@ -25,7 +25,7 @@ import playTab from '@/components/playTab.vue'
 })
 export default class Home extends Vue {
   currentView = 'my'
-  
+
   //监听vuex中的homeTab并进行组件切换
   @Watch('$store.state.homeTab')
   changeTab(){

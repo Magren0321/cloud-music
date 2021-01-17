@@ -8,4 +8,5 @@ export default{
     songListId: 0, //播放中的歌单id
     songList:'', //播放中的歌单
     songIndex:0, //播放的歌曲在歌单中的位置
+    isPlaying: false, //是否正在播放
 }

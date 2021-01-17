@@ -4,7 +4,7 @@
 
     <audio
       :src="audioUrl"
-      ref="audio"
+      ref="songAudio"
       preload="auto"
       autoplay
     ></audio>
@@ -14,7 +14,7 @@
         <p>{{title}}</p>
     </div>
 
-    <div class="coverImg">
+    <div class="coverImg" >
       <img :src="songImg">
     </div>
 
@@ -34,11 +34,22 @@
     </div>
 
     <div class="control">
-      <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
-      <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
-      <v-icon size="8vh" color="#fff">mdi-play-circle-outline</v-icon>
-      <v-icon size="5vh" color="#fff">mdi-play-circle-outline</v-icon>
-      <v-icon size="5vh" color="#fff">mdi-playlist-music-outline</v-icon>
+       <v-btn icon color="#fff">
+        <v-icon size="5vh" color="#DFD6D4">mdi-play-circle-outline</v-icon>
+       </v-btn>
+       <v-btn icon color="#fff">
+        <v-icon size="5vh" color="#DFD6D4" >mdi-play-circle-outline</v-icon>
+       </v-btn>
+       <v-btn icon color="#fff"  @click="changeStatus()">
+        <v-icon size="8vh" color="#DFD6D4" v-show="!isPlaying">mdi-play-circle-outline</v-icon>
+        <v-icon size="8vh" color="#DFD6D4" v-show="isPlaying">mdi-pause-circle-outline</v-icon>
+       </v-btn>
+       <v-btn icon color="#fff">
+        <v-icon size="5vh" color="#DFD6D4">mdi-play-circle-outline</v-icon>
+       </v-btn>
+       <v-btn icon color="#fff">
+        <v-icon size="5vh" color="#DFD6D4">mdi-playlist-music-outline</v-icon>
+       </v-btn>
     </div>
     
   </div>
@@ -54,9 +65,11 @@ export default class PlayPage extends Vue {
     songImg = require("@/assets/like.png");
     playingTime = '00:00';
     endTime = '00:00';
-    barValue = -50;
-    audioUrl = '';
-    songList = [];
+    barValue = -50; //播放进度
+    audioUrl = ''; //播放的url
+    songList = []; //播放的歌单
+    isPlaying = false; //播放/暂停
+
     //隐藏播放组件
     hidePlayPage(): void{
       this.$store.commit('SHOW_PLAYPAGE',false);
@@ -65,14 +78,33 @@ export default class PlayPage extends Vue {
     startPlay(id: number): void{
       api.getSong(id).then((res: object|any)=>{
         this.audioUrl = res.data.data[0].url;
-        
+        this.isPlaying = true;
       })
+    }
+    //获取歌曲详细信息
+    getSongInfo(id: number): void{
+      api.getSongInfo(id).then((res: object|any)=>{
+        console.log(res);
+        this.songImg = res.data.songs[0].al.picUrl;
+      })
+    }
+    //暂停/开始播放
+    changeStatus(){
+      if(this.isPlaying){
+        (this.$refs.songAudio as any).pause();
+        this.isPlaying = false;
+      }else{
+        (this.$refs.songAudio as any).start();
+        this.isPlaying = true;
+      }
+      console.log(this.isPlaying)
     }
     //当选中的歌曲改变时候先检测是否可用
     @Watch('$store.state.songId')
     playSong(): void{
       api.songAvailable(this.$store.state.songId).then((res: object|any)=>{
         if(res.data.success == true){
+          this.getSongInfo(this.$store.state.songId); //获取详情
           this.startPlay(this.$store.state.songId); //播放
           this.songList = JSON.parse(this.$store.state.songList) //获取播放歌曲所在的歌单
         }else{
@@ -80,6 +112,8 @@ export default class PlayPage extends Vue {
         }
       })
     }
+
+
 }
 </script>
 
@@ -134,6 +168,7 @@ export default class PlayPage extends Vue {
 }
 .coverImg img{
   height: 35vh;
+  width: 35vh;
   border: 6vh solid #000000; /*border: 1px solid #000000;*/
   -webkit-border-radius: 50%;
   border-radius: 50%;
@@ -143,15 +178,17 @@ export default class PlayPage extends Vue {
   -webkit-transition-duration: 1s;
   -moz-transition-property: -moz-transform;
   -moz-transition-duration: 1s;
-  -webkit-animation: rotate 3s linear infinite;
-  -moz-animation: rotate 3s linear infinite;
-  -o-animation: rotate 3s linear infinite;
-  animation: rotate 3s linear infinite;
+  -webkit-animation: rotate 10s linear infinite;
+  -moz-animation: rotate 10s linear infinite;
+  -o-animation: rotate 10s linear infinite;
+  animation: rotate 10s linear infinite;
 }
 .schedule{
   display: flex;
   justify-content: space-around;
   width: 100%;
+  position: fixed;
+  bottom: 14vh;
 }
 .schedule p{
   width: 15%;
@@ -167,7 +204,9 @@ export default class PlayPage extends Vue {
   width: 70%;
 }
 .control{
-  margin-top: 20px;
+  position: fixed;
+  width: 100%;
+  bottom: 3vh;
   display: flex;
   justify-content: space-around;
 }
