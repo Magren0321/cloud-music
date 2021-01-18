@@ -7,6 +7,8 @@
       ref="songAudio"
       preload="auto"
       autoplay
+      @canplay="getDuration"
+      @timeupdate="updateTime"
     ></audio>
 
     <div class="tab">
@@ -22,6 +24,9 @@
       <p>{{playingTime}}</p>
       <div class="bar">
         <v-slider
+        @mousedown="isDraging = true"
+        @mouseup="isDraging = false"
+        @change="setProcess()"
         color="red"
         track-color="#CFC8C6"
         v-model = 'barValue'
@@ -37,15 +42,15 @@
        <v-btn icon color="#fff">
         <v-icon size="5vh" color="#DFD6D4">mdi-play-circle-outline</v-icon>
        </v-btn>
-       <v-btn icon color="#fff">
-        <v-icon size="5vh" color="#DFD6D4" >mdi-play-circle-outline</v-icon>
+       <v-btn icon color="#fff" @click="changeSong(-1)">
+        <v-icon size="5vh" color="#DFD6D4" >mdi-skip-previous-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff"  @click="changeStatus()">
         <v-icon size="8vh" color="#DFD6D4" v-show="!$store.state.isPlaying">mdi-play-circle-outline</v-icon>
         <v-icon size="8vh" color="#DFD6D4" v-show="$store.state.isPlaying">mdi-pause-circle-outline</v-icon>
        </v-btn>
-       <v-btn icon color="#fff">
-        <v-icon size="5vh" color="#DFD6D4">mdi-play-circle-outline</v-icon>
+       <v-btn icon color="#fff" @click="changeSong(1)">
+        <v-icon size="5vh" color="#DFD6D4">mdi-skip-next-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff">
         <v-icon size="5vh" color="#DFD6D4">mdi-playlist-music-outline</v-icon>
@@ -63,11 +68,13 @@ import api from '@/api/index';
 export default class PlayPage extends Vue {
     title = '';
     songImg = require("@/assets/like.png");
-    playingTime = '00:00';
-    endTime = '00:00';
-    barValue = -50; //播放进度
+    playingTime = '0:00'; //正在播放的时间
+    endTime = '0:00'; //结束时间
+    totalDuration = 0; //总时长（时间戳)
+    barValue = -50; //进度条
     audioUrl = ''; //播放的url
     songList = []; //播放的歌单
+    isDraging = false; //用于判断是否点击下进度条
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -83,13 +90,12 @@ export default class PlayPage extends Vue {
     //获取歌曲详细信息
     getSongInfo(id: number): void{
       api.getSongInfo(id).then((res: object|any)=>{
-        console.log(res);
         this.songImg = res.data.songs[0].al.picUrl;
         this.title = res.data.songs[0].name
       })
     }
     //暂停/开始播放
-    changeStatus(){
+    changeStatus(): void{
       if(this.$store.getters.IS_PLAYING){
         (this.$refs.songAudio as any).pause();
         this.$store.commit('IS_PLAYING',false);
@@ -103,6 +109,8 @@ export default class PlayPage extends Vue {
     playSong(): void{
       api.songAvailable(this.$store.state.songId).then((res: object|any)=>{
         if(res.data.success == true){
+          (this.$refs.songAudio as any).pause();
+          this.$store.commit('IS_PLAYING',false);
           this.getSongInfo(this.$store.state.songId); //获取详情
           this.startPlay(this.$store.state.songId); //播放
           this.songList = JSON.parse(this.$store.state.songList) //获取播放歌曲所在的歌单
@@ -111,7 +119,47 @@ export default class PlayPage extends Vue {
         }
       })
     }
-
+    //获取播放总时长
+    getDuration(): void{
+      const timeStamp: number = (this.$refs.songAudio as any).duration; 
+      this.totalDuration = timeStamp;
+      const m: number = Math.floor((timeStamp / 60) % 60);
+      const s: number = Math.floor(timeStamp % 60);
+      if(s<10){
+        this.endTime = m + ':0' + s;
+      }else{
+        this.endTime = m + ':' + s;
+      }
+    }
+    //获取audio当前播放时间
+    updateTime(e: object|any): void{
+      const m: number = Math.floor((e.target.currentTime / 60) % 60);
+      const s: number = Math.floor(e.target.currentTime % 60);
+      if(s<10){
+        this.playingTime = m + ':0' + s;
+      }else{
+        this.playingTime = m + ':' + s;
+      }
+      //当鼠标按下的时候不将当前的播放时间赋值给进度条，当鼠标是抬起的时候再赋值，这样即可拖动。
+      if(!this.isDraging){ 
+        this.barValue = e.target.currentTime/(this.$refs.songAudio as any).duration*100-50;
+      }
+    }
+    //进度条拖动修改播放位置
+    setProcess(): void{
+      (this.$refs.songAudio as any).currentTime = (this.barValue+50)/100*this.totalDuration;
+    }
+    //上/下一首  index: -1上一首，1下一首
+    changeSong(index: number): void{
+      if(this.$store.getters.SONG_INDEX == 1 && index == -1){
+        this.$store.commit("SONG_INDEX",this.songList.length);//当当前播放的歌曲是第一首的时候，点击上一首跳转到歌单的最后一首
+      }else if(this.$store.getters.SONG_INDEX == this.songList.length && index == 1){
+        this.$store.commit("SONG_INDEX",1);//当当前播放的歌曲是最后一首的时候，点击下一首跳转到歌单的第一首
+      }else{
+        this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+index);
+      }
+      this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
+    }
 
 }
 </script>
