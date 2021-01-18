@@ -2,6 +2,31 @@
 <template>
   <div class="wrap">
 
+    <v-bottom-sheet
+      v-model="sheet"
+    >
+    <div class="songlist">
+      <div class="sheetTitle">
+        <p>当前播放：</p>
+      </div>
+      <v-list>
+        <v-list-item-group
+          v-model="selectedItem"
+          color="primary"
+        >
+          <v-list-item
+            v-for="(item, i) in songList"
+            :key="i"
+          >
+          <v-list-item-content>
+            <v-list-item-title v-text="item.name"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+    </div>
+    </v-bottom-sheet>
+
     <audio
       :src="audioUrl"
       ref="songAudio"
@@ -52,7 +77,7 @@
        <v-btn icon color="#fff" @click="changeSong(1)">
         <v-icon size="5vh" color="#DFD6D4">mdi-skip-next-outline</v-icon>
        </v-btn>
-       <v-btn icon color="#fff">
+       <v-btn icon color="#fff" @click="sheet=true">
         <v-icon size="5vh" color="#DFD6D4">mdi-playlist-music-outline</v-icon>
        </v-btn>
     </div>
@@ -75,6 +100,8 @@ export default class PlayPage extends Vue {
     audioUrl = ''; //播放的url
     songList = []; //播放的歌单
     isDraging = false; //用于判断是否点击下进度条
+    sheet = false; //歌单是否打开
+    selectedItem = 0
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -256,5 +283,11 @@ export default class PlayPage extends Vue {
   bottom: 3vh;
   display: flex;
   justify-content: space-around;
+}
+.songlist{
+  background-color: #fff;
+  height: 50vh;
+  width: 100%;
+  border-radius: 15px 15px 0 0;
 }
 </style>
