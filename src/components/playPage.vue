@@ -6,24 +6,22 @@
       v-model="sheet"
     >
     <div class="songlist">
-      <div class="sheetTitle">
-        <p>当前播放：</p>
-      </div>
-      <v-list>
-        <v-list-item-group
-          v-model="selectedItem"
-          color="primary"
-        >
-          <v-list-item
-            v-for="(item, i) in songList"
-            :key="i"
-          >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.name"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+      <v-subheader>当前播放({{songList.length}}):</v-subheader>
+      <v-virtual-scroll
+        item-height='50'
+        height="999"
+        width="100%"
+        :items="songList"
+      >
+      <template v-slot:default="{ item,index }">
+        <v-list-item-action> 
+              <v-btn class="btnSonglist" x-large @click="otherSongs(item.id,index)">
+                  <p>{{item.name}}</p>
+                  <v-icon color="red" v-show="item.id == $store.getters.SONG_ID">mdi-volume-high</v-icon>
+              </v-btn>
+        </v-list-item-action>
+      </template>
+      </v-virtual-scroll>
     </div>
     </v-bottom-sheet>
 
@@ -101,7 +99,6 @@ export default class PlayPage extends Vue {
     songList = []; //播放的歌单
     isDraging = false; //用于判断是否点击下进度条
     sheet = false; //歌单是否打开
-    selectedItem = 0
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -186,6 +183,12 @@ export default class PlayPage extends Vue {
         this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+index);
       }
       this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
+    }
+    //从歌单切换歌曲
+    otherSongs(id: number,index: number){
+      this.$store.commit("SONG_ID",id); //歌曲id
+      this.$store.commit("SONG_INDEX",index+1);  //歌曲位置
+      this.sheet = false;
     }
 
 }
@@ -286,8 +289,30 @@ export default class PlayPage extends Vue {
 }
 .songlist{
   background-color: #fff;
-  height: 50vh;
+  height: 60vh;
   width: 100%;
   border-radius: 15px 15px 0 0;
+}
+.sheetTitle p{
+  margin-top: 20px;
+  font-weight: bold;
+}
+.v-list-item__action{
+  width: 100%;
+  margin: 0!important;
+}
+.btnSonglist{
+  width: 100%;
+  justify-content: left;
+  display: inline;
+}
+.btnSonglist p{
+  width: 90%;
+  font-size: 15px;
+  margin: 0 5px 0 0;
+  white-space: nowrap;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
