@@ -9,4 +9,5 @@ export default{
     songList:'', //播放中的歌单
     songIndex:0, //播放的歌曲在歌单中的位置
     isPlaying: false, //是否正在播放
+    mode: 'order', //三种播放模式，order：顺序，random：随机，loop：循环
 }

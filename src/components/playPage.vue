@@ -16,7 +16,7 @@
       <template v-slot:default="{ item,index }">
         <v-list-item-action> 
               <v-btn class="btnSonglist" x-large @click="otherSongs(item.id,index)">
-                  <p>{{item.name}}</p>
+                  <p>{{index+1}}: {{item.name}}</p>
                   <v-icon color="red" v-show="item.id == $store.getters.SONG_ID">mdi-volume-high</v-icon>
               </v-btn>
         </v-list-item-action>
@@ -32,6 +32,7 @@
       autoplay
       @canplay="getDuration"
       @timeupdate="updateTime"
+      @ended="endedSong"
     ></audio>
 
     <div class="tab">
@@ -62,8 +63,10 @@
     </div>
 
     <div class="control">
-       <v-btn icon color="#fff">
-        <v-icon size="5vh" color="#DFD6D4">mdi-play-circle-outline</v-icon>
+       <v-btn icon color="#fff" @click="changeMode()">
+        <v-icon size="4vh" color="#DFD6D4" v-show="$store.getters.MODE == 'random'">mdi-shuffle-variant</v-icon>
+        <v-icon size="4vh" color="#DFD6D4" v-show="$store.getters.MODE == 'order'">mdi-swap-horizontal</v-icon>
+        <v-icon size="4vh" color="#DFD6D4" v-show="$store.getters.MODE == 'loop'">mdi-repeat-once</v-icon>
        </v-btn>
        <v-btn icon color="#fff" @click="changeSong(-1)">
         <v-icon size="5vh" color="#DFD6D4" >mdi-skip-previous-outline</v-icon>
@@ -185,10 +188,37 @@ export default class PlayPage extends Vue {
       this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
     }
     //从歌单切换歌曲
-    otherSongs(id: number,index: number){
+    otherSongs(id: number,index: number): void{
       this.$store.commit("SONG_ID",id); //歌曲id
       this.$store.commit("SONG_INDEX",index+1);  //歌曲位置
       this.sheet = false;
+    }
+    //切换模式
+    changeMode(): void{
+      if(this.$store.getters.MODE == 'order'){
+        this.$store.commit("MODE",'random');
+      }else if(this.$store.getters.MODE == 'random'){
+        this.$store.commit("MODE",'loop')
+      }else{
+        this.$store.commit('MODE','order')
+      }
+    }
+    //当歌曲结束的时候
+    endedSong(): void{
+      if(this.$store.getters.MODE == 'order'){
+        if(this.$store.getters.SONG_INDEX == this.songList.length){
+          this.$store.commit("SONG_INDEX",1);
+        }else{
+          this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+1);
+        }
+      }else if(this.$store.getters.MODE == 'random'){
+        let random = Math.floor(Math.random()*this.songList.length+1) //取1到歌单长度的一个随机数，然后Math.floor向下取整
+        if(random == this.$store.getters.SONG_INDEX){
+          random = Math.floor(Math.random()*this.songList.length+1)
+        }
+        this.$store.commit("SONG_INDEX",random);
+      }
+      this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
     }
 
 }

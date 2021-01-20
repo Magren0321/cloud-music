@@ -29,6 +29,9 @@ export default{
         state.songListId = id;
     },
     [types.IS_PLAYING](state:object|any,isPlaying: boolean){
-        state.isPlaying = isPlaying
+        state.isPlaying = isPlaying;
+    },
+    [types.MODE](state:object|any,mode: string){
+        state.mode = mode;
     },
 }

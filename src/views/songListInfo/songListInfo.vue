@@ -20,7 +20,7 @@
         <p>播放全部</p>
       </div>
 
-      <div v-bind:class="{songlistfixed:isMorethen193}">
+      <div v-bind:class="{songlistfixed:isMorethen193}"  class="songListScroll">
       <div class="songlist" v-for="(item,index) in songlist" :key="item.id" @click="playSong(item.id,index)">
         <div class="songlistIndex">
           <v-icon color="red" v-if="index==$store.state.songIndex-1&&songListId==$store.state.songListId">mdi-volume-high</v-icon>
@@ -35,16 +35,17 @@
       </div>
       </div>
 
+    <play-tab v-show="$store.state.songIndex!=0"></play-tab>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import api from '@/api/index'
-
+import playTab from '@/components/playTab.vue'
 @Component({
   components: {
-    
+    playTab,
   },
 })
 export default class SongListInfo extends Vue {
@@ -209,6 +210,9 @@ p{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.songListScroll{
+  margin-bottom: 90px;
 }
 
 </style>
