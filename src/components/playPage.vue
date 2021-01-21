@@ -74,9 +74,9 @@
        <v-btn icon color="#fff" @click="changeSong(-1)">
         <v-icon size="5vh" color="#DFD6D4" >mdi-skip-previous-outline</v-icon>
        </v-btn>
-       <v-btn icon color="#fff"  @click="changeStatus()">
-        <v-icon size="8vh" color="#DFD6D4" v-show="!$store.state.isPlaying">mdi-play-circle-outline</v-icon>
-        <v-icon size="8vh" color="#DFD6D4" v-show="$store.state.isPlaying">mdi-pause-circle-outline</v-icon>
+       <v-btn icon color="#fff"  @click="$store.commit('IS_PLAYING',!$store.getters.IS_PLAYING)">
+        <v-icon size="8vh" color="#DFD6D4" v-show="$store.state.isPlaying">mdi-play-circle-outline</v-icon>
+        <v-icon size="8vh" color="#DFD6D4" v-show="!$store.state.isPlaying">mdi-pause-circle-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff" @click="changeSong(1)">
         <v-icon size="5vh" color="#DFD6D4">mdi-skip-next-outline</v-icon>
@@ -115,7 +115,6 @@ export default class PlayPage extends Vue {
     startPlay(id: number): void{
       api.getSong(id).then((res: object|any)=>{
         this.audioUrl = res.data.data[0].url;
-        this.$store.commit('IS_PLAYING',true);
       })
     }
     //获取歌曲详细信息
@@ -125,14 +124,13 @@ export default class PlayPage extends Vue {
         this.title = res.data.songs[0].name
       })
     } 
-    //暂停/开始播放
-    changeStatus(): void{
+    //改变播放状态
+    @Watch('$store.getters.IS_PLAYING')
+    changeStatus(){
       if(this.$store.getters.IS_PLAYING){
         (this.$refs.songAudio as any).pause();
-        this.$store.commit('IS_PLAYING',false);
       }else{
         (this.$refs.songAudio as any).play();
-        this.$store.commit('IS_PLAYING',true);
       }
     }
     //弹出歌单并且设置歌单高度

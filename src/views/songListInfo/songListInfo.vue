@@ -15,7 +15,7 @@
       </div>
 
       
-      <div class="playall" v-bind:class="{playallfixed:isMorethen193}">
+      <div class="playall" v-bind:class="{playallfixed:isMorethen193}" @click="playAll()">
         <v-icon large>mdi-play-circle-outline</v-icon>
         <p>播放全部</p>
       </div>
@@ -91,7 +91,14 @@ export default class SongListInfo extends Vue {
     this.$store.commit("SONGLIST_ID",this.songListId); //播放中的歌单id
     this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
   }
-
+  //播放全部
+  playAll(): void{
+    this.$store.commit("SONG_LIST",JSON.stringify(this.songlist));
+    this.$store.commit("SONG_ID",this.songlist[0].id); //歌曲id
+    this.$store.commit("SONG_INDEX",1);  //歌曲位置
+    this.$store.commit("SONGLIST_ID",this.songListId); //播放中的歌单id
+    this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
+  }
   mounted () {
     //页面刷新无法获取传递过来的参数，同时store也会刷新，暂且先返回首页
     if(this.$route.params.id == undefined){

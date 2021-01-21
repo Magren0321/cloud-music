@@ -2,7 +2,6 @@
   <div class="home">
     <home-nav></home-nav>
      <div :is="currentView" class="content"></div>
-     <play-tab v-show="$store.state.songIndex!=0"></play-tab>
   </div>
 </template>
 
@@ -12,7 +11,7 @@ import  HomeNav  from '@/components/homenav.vue'
 import my from './my/my.vue'
 import find from './find/find.vue'
 import movie from './movie/movie.vue'
-import playTab from '@/components/playTab.vue'
+
 
 @Component({
   components: {
@@ -20,7 +19,6 @@ import playTab from '@/components/playTab.vue'
     my,
     find,
     movie,
-    playTab,
   },
 })
 export default class Home extends Vue {
