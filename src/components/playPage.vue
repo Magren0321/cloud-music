@@ -1,16 +1,17 @@
 <!--播放页面-->
 <template>
-  <div class="wrap">
+  <div class="wrap" ref="wrap">
 
     <v-bottom-sheet
       v-model="sheet"
     >
     <div class="songlist">
-      <v-subheader>当前播放({{songList.length}}):</v-subheader>
+    <v-subheader>当前播放({{songList.length}}):</v-subheader>
+    <div>
       <v-virtual-scroll
+        bench= 2
         item-height='50'
-        height="999"
-        width="100%"
+        :height="scrollHeight"
         :items="songList"
       >
       <template v-slot:default="{ item,index }">
@@ -23,6 +24,7 @@
       </template>
       </v-virtual-scroll>
     </div>
+    </div>
     </v-bottom-sheet>
 
     <audio
@@ -33,6 +35,7 @@
       @canplay="getDuration"
       @timeupdate="updateTime"
       @ended="endedSong"
+      @error="errorSong"
     ></audio>
 
     <div class="tab">
@@ -78,7 +81,7 @@
        <v-btn icon color="#fff" @click="changeSong(1)">
         <v-icon size="5vh" color="#DFD6D4">mdi-skip-next-outline</v-icon>
        </v-btn>
-       <v-btn icon color="#fff" @click="sheet=true">
+       <v-btn icon color="#fff" @click="changeSheet()">
         <v-icon size="5vh" color="#DFD6D4">mdi-playlist-music-outline</v-icon>
        </v-btn>
     </div>
@@ -102,12 +105,13 @@ export default class PlayPage extends Vue {
     songList = []; //播放的歌单
     isDraging = false; //用于判断是否点击下进度条
     sheet = false; //歌单是否打开
+    scrollHeight = 0; //播放页歌单高度
 
     //隐藏播放组件
     hidePlayPage(): void{
       this.$store.commit('SHOW_PLAYPAGE',false);
     }
-    //播放可取
+    //播放歌曲
     startPlay(id: number): void{
       api.getSong(id).then((res: object|any)=>{
         this.audioUrl = res.data.data[0].url;
@@ -120,7 +124,7 @@ export default class PlayPage extends Vue {
         this.songImg = res.data.songs[0].al.picUrl;
         this.title = res.data.songs[0].name
       })
-    }
+    } 
     //暂停/开始播放
     changeStatus(): void{
       if(this.$store.getters.IS_PLAYING){
@@ -130,6 +134,11 @@ export default class PlayPage extends Vue {
         (this.$refs.songAudio as any).play();
         this.$store.commit('IS_PLAYING',true);
       }
+    }
+    //弹出歌单并且设置歌单高度
+    changeSheet(){
+      this.sheet = true;
+      this.scrollHeight = (this.$refs.wrap as any).offsetHeight/5*3-48;
     }
     //当选中的歌曲改变时候先检测是否可用
     @Watch('$store.state.songId')
@@ -142,7 +151,7 @@ export default class PlayPage extends Vue {
           this.startPlay(this.$store.state.songId); //播放
           this.songList = JSON.parse(this.$store.state.songList) //获取播放歌曲所在的歌单
         }else{
-          console.log('歌曲不可用');
+          this.errorSong();
         }
       })
     }
@@ -211,14 +220,30 @@ export default class PlayPage extends Vue {
         }else{
           this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+1);
         }
+        this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
       }else if(this.$store.getters.MODE == 'random'){
         let random = Math.floor(Math.random()*this.songList.length+1) //取1到歌单长度的一个随机数，然后Math.floor向下取整
         if(random == this.$store.getters.SONG_INDEX){
           random = Math.floor(Math.random()*this.songList.length+1)
         }
         this.$store.commit("SONG_INDEX",random);
+        this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
+      }else{
+        (this.$refs.songAudio as any).currentTime = 0;
+        (this.$refs.songAudio as any).play();
       }
-      this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
+    }
+    //当歌曲错误/不可用
+    errorSong(): void{
+      if(this.$store.getters.SONG_ID != 0){
+        if(this.$store.getters.SONG_INDEX == this.songList.length){
+          this.$store.commit("SONG_INDEX",1);
+        }
+        else{
+          this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+1);
+        }
+        this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
+      }
     }
 
 }
@@ -322,10 +347,6 @@ export default class PlayPage extends Vue {
   height: 60vh;
   width: 100%;
   border-radius: 15px 15px 0 0;
-}
-.sheetTitle p{
-  margin-top: 20px;
-  font-weight: bold;
 }
 .v-list-item__action{
   width: 100%;
