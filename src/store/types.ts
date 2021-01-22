@@ -9,3 +9,6 @@ export const SONG_INDEX = "SONG_INDEX"; //播放的歌曲在歌单中的位置
 export const SONGLIST_ID = "SONGLIST_ID"; //播放中的歌单id
 export const IS_PLAYING = "IS_PLAYING"; //是否正在播放
 export const MODE = "MODE"; //播放模式
+export const SHOW_LYRIC = "SHOW_LYRIC"; //展示歌词
+export const SHOW_SONGTAB = "SHOW_SONGTAB"; //显示下方播放栏
+export const SONG_AVAILABLE = "SONG_AVAILABLE"; //当前歌曲是否可用

@@ -102,4 +102,14 @@ export default{
             method: 'get'
         })
     },
+    /**
+     * 获取歌曲歌词
+     * @param id 歌曲id
+     */
+    getLyric(id: number){
+        return axios({
+            url: config.getLyric + '?id=' + id,
+            method: 'get'
+        })
+    },
 }

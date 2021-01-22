@@ -8,6 +8,8 @@ export default{
     songListId: 0, //播放中的歌单id
     songList:'', //播放中的歌单
     songIndex:0, //播放的歌曲在歌单中的位置
-    isPlaying: false, //是否正在播放
+    isPlaying: true, //是否正在播放
     mode: 'order', //三种播放模式，order：顺序，random：随机，loop：循环
+    showLyric: false, //展示歌词
+    showSongTab: false, //显示下方播放栏
 }

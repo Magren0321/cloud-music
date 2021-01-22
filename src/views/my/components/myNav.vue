@@ -42,7 +42,6 @@ export default class MyNav extends Vue {
     name: "云盘"
   }
   ]
-
   //method
   tabClick(id: number): void{
     console.log(id)

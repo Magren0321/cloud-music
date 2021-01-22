@@ -10,6 +10,9 @@ const getters = {
     SONGLIST_ID:(state:object|any)=>state.songListId,
     IS_PLAYING:(state:object|any)=>state.isPlaying,
     MODE:(state:object|any)=>state.mode,
+    SHOW_LYRIC:(state:object|any)=>state.showLyric,
+    SHOW_SONGTAB:(state:object|any)=>state.showSongTab,
+    SONG_AVAILABLE:(state:object|any)=>state.songAvailable,
 }
   
 export default getters

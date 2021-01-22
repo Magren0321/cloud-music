@@ -10,8 +10,8 @@
     </div>
     <div class="controlBtn">
       <v-btn icon color="#fff" @click.stop="changeStatus()">
-        <v-icon size="45px" color="#000000" v-show="$store.getters.IS_PLAYING">mdi-play-circle-outline</v-icon>
-        <v-icon size="45px" color="#000000" v-show="!$store.getters.IS_PLAYING">mdi-pause-circle-outline</v-icon>
+        <v-icon size="45px" color="#000000" v-show="!$store.getters.IS_PLAYING">mdi-play-circle-outline</v-icon>
+        <v-icon size="45px" color="#000000" v-show="$store.getters.IS_PLAYING">mdi-pause-circle-outline</v-icon>
       </v-btn>
     </div>
   </div>
@@ -30,9 +30,9 @@ export default class PlayTab extends Vue {
   @Watch('$store.getters.SONG_ID')
   getSonginfo(){
     api.getSongInfo(this.$store.getters.SONG_ID).then((res: object|any)=>{
-        this.songImg = res.data.songs[0].al.picUrl;
-        this.songName = res.data.songs[0].name
-        this.songAuthor = res.data.songs[0].ar[0].name
+      this.songImg = res.data.songs[0].al.picUrl;
+      this.songName = res.data.songs[0].name
+      this.songAuthor = res.data.songs[0].ar[0].name
     })
   }
   //暂停/开始播放

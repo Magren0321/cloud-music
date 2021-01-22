@@ -34,4 +34,13 @@ export default{
     [types.MODE](state:object|any,mode: string){
         state.mode = mode;
     },
+    [types.SHOW_LYRIC](state:object|any,show: boolean){
+        state.showLyric = show;
+    },
+    [types.SHOW_SONGTAB](state:object|any,show: boolean){
+        state.showSongTab = show;
+    },
+    [types.SONG_AVAILABLE](state:object|any,available: boolean){
+        state.songAvailable = available;
+    },
 }

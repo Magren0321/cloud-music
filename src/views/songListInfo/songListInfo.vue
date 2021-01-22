@@ -21,7 +21,7 @@
       </div>
 
       <div v-bind:class="{songlistfixed:isMorethen193}"  class="songListScroll">
-      <div class="songlist" v-for="(item,index) in songlist" :key="item.id" @click="playSong(item.id,index)">
+      <div class="songlist" v-for="(item,index) in songlist" :key="item.id" @click="checkSong(item.id,index)">
         <div class="songlistIndex">
           <v-icon color="red" v-if="index==$store.state.songIndex-1&&songListId==$store.state.songListId">mdi-volume-high</v-icon>
           <p v-else>{{index+1}}</p>
@@ -35,17 +35,16 @@
       </div>
       </div>
 
-    <play-tab v-show="$store.state.songIndex!=0"></play-tab>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import api from '@/api/index'
-import playTab from '@/components/playTab.vue'
+
 @Component({
   components: {
-    playTab,
+
   },
 })
 export default class SongListInfo extends Vue {
@@ -89,15 +88,20 @@ export default class SongListInfo extends Vue {
     this.$store.commit("SONG_ID",id); //歌曲id
     this.$store.commit("SONG_INDEX",index+1);  //歌曲位置
     this.$store.commit("SONGLIST_ID",this.songListId); //播放中的歌单id
-    this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
   }
   //播放全部
   playAll(): void{
-    this.$store.commit("SONG_LIST",JSON.stringify(this.songlist));
-    this.$store.commit("SONG_ID",this.songlist[0].id); //歌曲id
-    this.$store.commit("SONG_INDEX",1);  //歌曲位置
-    this.$store.commit("SONGLIST_ID",this.songListId); //播放中的歌单id
-    this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
+    this.playSong(this.songlist[0].id,0)
+  }
+  //检查歌曲是否可用
+  checkSong(id: number,index: number){
+    api.songAvailable(id).then((res: object|any)=>{
+        if(res.data.success == true){
+          this.playSong(id,index)
+        }else{
+          console.log('歌曲不可用')
+        }
+      })
   }
   mounted () {
     //页面刷新无法获取传递过来的参数，同时store也会刷新，暂且先返回首页

@@ -44,7 +44,8 @@
     </div>
 
     <div class="coverImg" >
-      <img :src="songImg">
+      <img :src="songImg" v-if="!$store.getters.SHOW_LYRIC" @click="$store.commit('SHOW_LYRIC',true)"> 
+      <lyric v-else :lyric='lyric'></lyric>
     </div>
 
     <div class="schedule">
@@ -75,8 +76,8 @@
         <v-icon size="5vh" color="#DFD6D4" >mdi-skip-previous-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff"  @click="$store.commit('IS_PLAYING',!$store.getters.IS_PLAYING)">
-        <v-icon size="8vh" color="#DFD6D4" v-show="$store.state.isPlaying">mdi-play-circle-outline</v-icon>
-        <v-icon size="8vh" color="#DFD6D4" v-show="!$store.state.isPlaying">mdi-pause-circle-outline</v-icon>
+        <v-icon size="8vh" color="#DFD6D4" v-show="!$store.state.isPlaying">mdi-play-circle-outline</v-icon>
+        <v-icon size="8vh" color="#DFD6D4" v-show="$store.state.isPlaying">mdi-pause-circle-outline</v-icon>
        </v-btn>
        <v-btn icon color="#fff" @click="changeSong(1)">
         <v-icon size="5vh" color="#DFD6D4">mdi-skip-next-outline</v-icon>
@@ -92,8 +93,15 @@
 <script lang="ts">
 import { Component,  Vue, Watch } from 'vue-property-decorator';
 import api from '@/api/index';
+import lyric from './components/lyric.vue';
 
-@Component
+
+@Component({
+  components: {
+    lyric,
+  },
+})
+
 export default class PlayPage extends Vue {
     title = '';
     songImg = require("@/assets/like.png");
@@ -106,6 +114,7 @@ export default class PlayPage extends Vue {
     isDraging = false; //用于判断是否点击下进度条
     sheet = false; //歌单是否打开
     scrollHeight = 0; //播放页歌单高度
+    lyric = ''; //歌曲歌词
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -128,9 +137,9 @@ export default class PlayPage extends Vue {
     @Watch('$store.getters.IS_PLAYING')
     changeStatus(){
       if(this.$store.getters.IS_PLAYING){
-        (this.$refs.songAudio as any).pause();
-      }else{
         (this.$refs.songAudio as any).play();
+      }else{
+        (this.$refs.songAudio as any).pause();
       }
     }
     //弹出歌单并且设置歌单高度
@@ -139,17 +148,18 @@ export default class PlayPage extends Vue {
       this.scrollHeight = (this.$refs.wrap as any).offsetHeight/5*3-48;
     }
     //当选中的歌曲改变时候先检测是否可用
-    @Watch('$store.state.songId')
+    @Watch('$store.getters.SONG_ID')
     playSong(): void{
-      api.songAvailable(this.$store.state.songId).then((res: object|any)=>{
+      api.songAvailable(this.$store.getters.SONG_ID).then((res: object|any)=>{
         if(res.data.success == true){
-          (this.$refs.songAudio as any).pause();
-          this.$store.commit('IS_PLAYING',false);
-          this.getSongInfo(this.$store.state.songId); //获取详情
-          this.startPlay(this.$store.state.songId); //播放
-          this.songList = JSON.parse(this.$store.state.songList) //获取播放歌曲所在的歌单
+          this.getSongInfo(this.$store.getters.SONG_ID); //获取详情
+          this.startPlay(this.$store.getters.SONG_ID); //播放
+          this.getLyric(this.$store.getters.SONG_ID); //获取歌词
+          this.songList = JSON.parse(this.$store.getters.SONG_LIST); //获取播放歌曲所在的歌单
+          this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
+          this.$store.commit('SHOW_SONGTAB',true); //显示下方播放栏
         }else{
-          this.errorSong();
+          console.log('歌曲不可用')
         }
       })
     }
@@ -243,7 +253,14 @@ export default class PlayPage extends Vue {
         this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
       }
     }
-
+    //获取歌词
+    getLyric(id: number): void{
+      api.getLyric(id).then((res: object|any)=>{
+        if(res.data.lrc != null){
+          this.lyric = res.data.lrc.lyric;
+        }
+      })
+    }
 }
 </script>
 

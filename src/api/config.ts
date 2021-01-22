@@ -12,3 +12,4 @@ export const subscribeSonglist = '/playlist/subscribe'; //收藏/取消收藏歌
 export const getSongInfo = '/song/detail'; //获取歌曲详情
 export const getSong = '/song/url'; //获取歌曲url
 export const songAvailable = '/check/music'; //检查歌曲是否可用
+export const getLyric = '/lyric'; //获取歌曲歌词
