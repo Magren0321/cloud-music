@@ -3,13 +3,7 @@
     <div class="noLyric" v-if="noLyric">
         <p>暂无歌词</p>
     </div>
-    <ul :style="{marginTop: marginTop}" v-else>
-      <li
-        v-for="(item, index) in lyricArray"
-        :key="index"
-        :class="{active: index === nowLyricIndex}"
-      >{{item}}</li>
-    </ul>
+   
     </div>
 </template>
 
@@ -22,7 +16,6 @@ export default class Lyric extends Vue {
     lyric!: string;
 
     noLyric = true;
-    marginTop = '0rem';
     nowLyricIndex = 0;
     lyricArray: any = [];
 
