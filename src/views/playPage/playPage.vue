@@ -43,9 +43,20 @@
         <p>{{title}}</p>
     </div>
 
-    <div class="coverImg" >
-      <img :src="songImg" v-if="!$store.getters.SHOW_LYRIC" @click="$store.commit('SHOW_LYRIC',true)"> 
-      <lyric v-else :lyric='lyric'></lyric>
+    <div class="coverImg" ref='coverImg'>
+      <img :src="songImg" v-if="!$store.getters.SHOW_LYRIC" @click="showLyric()"> 
+      <div class="lyric"  @click="$store.commit('SHOW_LYRIC',false)" v-else>
+        <div class="noLyric" v-if="noLyric">
+          <p>暂无歌词</p>
+        </div>
+        <ul :style="{marginTop: marginTop}">
+        <li
+          v-for="(item, index) in lyricArray"
+          :key="index"
+          :class="{active: index === nowLyricIndex}"
+        >{{ item.word }}</li>
+      </ul>
+      </div>
     </div>
 
     <div class="schedule">
@@ -93,12 +104,10 @@
 <script lang="ts">
 import { Component,  Vue, Watch } from 'vue-property-decorator';
 import api from '@/api/index';
-import lyric from './components/lyric.vue';
-
 
 @Component({
   components: {
-    lyric,
+    
   },
 })
 
@@ -115,6 +124,11 @@ export default class PlayPage extends Vue {
     sheet = false; //歌单是否打开
     scrollHeight = 0; //播放页歌单高度
     lyric = ''; //歌曲歌词
+    noLyric = true; //是否有歌词
+    nowLyricIndex = 0;  //当前播放的歌词索引
+    lyricArray: any = []; //歌词Array
+    marginTop = '0px' //记录滚动
+    midHeight = 0; //歌词中线
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -158,6 +172,7 @@ export default class PlayPage extends Vue {
           this.songList = JSON.parse(this.$store.getters.SONG_LIST); //获取播放歌曲所在的歌单
           this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
           this.$store.commit('SHOW_SONGTAB',true); //显示下方播放栏
+          this.$store.commit("IS_PLAYING",true);
         }else{
           console.log('歌曲不可用')
         }
@@ -188,13 +203,17 @@ export default class PlayPage extends Vue {
       if(!this.isDraging){ 
         this.barValue = e.target.currentTime/(this.$refs.songAudio as any).duration*100-50;
       }
+      this.nowLyricIndex = this.getCurrentIndex(e.target.currentTime,this.lyricArray)
+      this.moveLyric(this.nowLyricIndex);
     }
     //进度条拖动修改播放位置
     setProcess(): void{
       (this.$refs.songAudio as any).currentTime = (this.barValue+50)/100*this.totalDuration;
+      
     }
     //上/下一首  index: -1上一首，1下一首
     changeSong(index: number): void{
+      this.$store.commit("IS_PLAYING",false);
       if(this.$store.getters.SONG_INDEX == 1 && index == -1){
         this.$store.commit("SONG_INDEX",this.songList.length);//当当前播放的歌曲是第一首的时候，点击上一首跳转到歌单的最后一首
       }else if(this.$store.getters.SONG_INDEX == this.songList.length && index == 1){
@@ -203,6 +222,7 @@ export default class PlayPage extends Vue {
         this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+index);
       }
       this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
+      this.$store.commit('IS_PLAYING',true);
     }
     //从歌单切换歌曲
     otherSongs(id: number,index: number): void{
@@ -253,13 +273,79 @@ export default class PlayPage extends Vue {
         this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
       }
     }
+    //显示歌词
+    showLyric(): void{
+      this.midHeight = (this.$refs.coverImg as any).offsetHeight/2; //获取歌词中线高度
+      this.$store.commit("SHOW_LYRIC",true); //显示歌词
+    }
     //获取歌词
     getLyric(id: number): void{
       api.getLyric(id).then((res: object|any)=>{
         if(res.data.lrc != null){
           this.lyric = res.data.lrc.lyric;
+          this.lyricArray.splice(0,this.lyricArray.length); //清空数组、
+          this.nowLyricIndex = 0; //重置索引
+          if(this.lyric == ''){
+            this.noLyric = true;
+          }else{
+            this.noLyric = false;
+            this.transformArray(this.lyric); 
+          }
         }
       })
+    }
+    //将歌词字符串转换成时间、歌词对象
+    transformArray(lyric: string){
+      const LyricParts = lyric.split('\n');
+      for (let index = 0; index < LyricParts.length; index++) {
+        const part = LyricParts[index];
+        this.changeToObject(part); //将每句歌词转换成时间+歌词
+      }
+    }
+    //转换成对象
+    changeToObject (str: string) {
+      const words = str.split(']')[1];
+      // 正则返回时间信息
+      const reg = /\w{0,}:\w{0,}.\w{0,}/g;
+      let timeArray: any = reg.exec(str);
+      if (!timeArray) {
+        return;
+      }
+      timeArray = timeArray[0].split(':');
+      const minute = parseInt(timeArray[0]); // 分钟数
+      const second = parseFloat(timeArray[1]); // 秒数
+      const time = minute * 60 + second;
+      if(words!=''){
+        const lyric = {
+          time: time,
+          word: words
+        }
+        this.lyricArray.push(lyric);
+      }
+    }
+     /**
+     * 获取当前歌词索引
+     */
+    getCurrentIndex (time: number, lyricArray: any) {
+      for (let i = lyricArray.length - 2; i >= 0; i--) {
+        const element = lyricArray[i].time
+        if (time > element) {
+          return i
+        }
+        if (!element) {
+          return -1
+        }
+      }
+      return -1
+    }
+    //歌词滚动
+    moveLyric(index: number){
+      let top = this.midHeight - index * 42
+      if (top > 0) {
+        // top 不能为正数
+        top = 0
+      }
+      this.marginTop = top + 'px'
     }
 }
 </script>
@@ -380,5 +466,36 @@ export default class PlayPage extends Vue {
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.lyric{
+  height: 100%;
+  width: 100vh;
+  color: #A3A1A1;
+  overflow: hidden;
+}
+.noLyric{
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  height: 100%;
+  color: #A3A1A1;
+}
+ul{
+  margin-right: 5%;
+  list-style: none;
+  text-align: center;
+  /* ul元素的margin-top值变化，在0.7秒内完成 */
+  transition: margin-top 0.7s;
+}
+li{
+  height: 28px;
+  margin-top: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.active{
+  color: #fff;
+  font-weight: bold;
 }
 </style>
