@@ -169,7 +169,9 @@ export default class PlayPage extends Vue {
           this.getSongInfo(this.$store.getters.SONG_ID); //获取详情
           this.startPlay(this.$store.getters.SONG_ID); //播放
           this.getLyric(this.$store.getters.SONG_ID); //获取歌词
-          this.songList = JSON.parse(this.$store.getters.SONG_LIST); //获取播放歌曲所在的歌单
+          if(this.$store.getters.SONG_LIST!=''){
+            this.songList = JSON.parse(this.$store.getters.SONG_LIST); //获取播放歌曲所在的歌单
+          }
           this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
           this.$store.commit('SHOW_SONGTAB',true); //显示下方播放栏
           this.$store.commit("IS_PLAYING",true);
@@ -213,6 +215,9 @@ export default class PlayPage extends Vue {
     }
     //上/下一首  index: -1上一首，1下一首
     changeSong(index: number): void{
+      if(this.songList.length == 0){
+        return;
+      }
       this.$store.commit("IS_PLAYING",false);
       if(this.$store.getters.SONG_INDEX == 1 && index == -1){
         this.$store.commit("SONG_INDEX",this.songList.length);//当当前播放的歌曲是第一首的时候，点击上一首跳转到歌单的最后一首
@@ -242,6 +247,12 @@ export default class PlayPage extends Vue {
     }
     //当歌曲结束的时候
     endedSong(): void{
+      //如果只是一首歌曲（从banner传入）则循环播放
+      if(this.songList.length == 0){
+        (this.$refs.songAudio as any).currentTime = 0;
+        (this.$refs.songAudio as any).play();
+        return;
+      }
       if(this.$store.getters.MODE == 'order'){
         if(this.$store.getters.SONG_INDEX == this.songList.length){
           this.$store.commit("SONG_INDEX",1);

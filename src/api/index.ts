@@ -112,4 +112,13 @@ export default{
             method: 'get'
         })
     },
+    /**
+     * 获取发现页banner
+     */
+    getBanner(){
+        return axios({
+            url: config.getBanner,
+            method: 'get'
+        })
+    },
 }
