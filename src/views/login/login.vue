@@ -68,6 +68,7 @@ export default class Login extends Vue {
         localStorage.setItem('avatarUrl', accountInfo.avatarUrl)
         localStorage.setItem('nickname', accountInfo.nickname)
         localStorage.setItem('accountUid', userId)
+        this.$store.commit('LOGIN_STATE',true); //更改状态为已经登录
         this.loginSuccess();
       }
     })

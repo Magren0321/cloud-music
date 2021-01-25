@@ -27,12 +27,13 @@ import api from '@/api/index';
 export default class Banner extends Vue {
     banner = [];
 
+    //获取banner数据
     mounted(){
       api.getBanner().then((res:object|any)=>{
         this.banner = res.data.banners; 
-        console.log(this.banner)
       })
     }
+    //点击banner触发事件
     clickBanner(index: number): void{
         if((this.banner[index] as any).url!= null){
             const url: string = (this.banner[index] as any).url;

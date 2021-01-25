@@ -121,4 +121,23 @@ export default{
             method: 'get'
         })
     },
+    /**
+     * 获取用户推荐歌单（需要登录）
+     */
+    getPersonalRecommend(){
+        return axios({
+            url: config.getPersonalRecommend,
+            method: 'get'
+        })
+    },
+    /**
+     * 获取推荐歌单
+     * @param limit 歌单数量，默认为10
+     */
+    getRecommend(limit: number){
+        return axios({
+            url: config.getRecommend,
+            method: 'get'
+        })
+    },
 }
