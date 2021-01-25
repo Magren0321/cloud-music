@@ -8,7 +8,7 @@
         v-model="dialog">
         <create-dialog></create-dialog>
     </v-dialog>
-    <div class="mylike" @click="toSonglistPage(likeSonglist.id,likeSonglist.name)">
+    <div class="mylike" @click="toSonglistPage(likeSonglist.id)">
         <img :src="likeImg">
         <div class="like-information">
             <p>我喜欢的音乐</p>
@@ -24,7 +24,7 @@
         </div>
         <div class="songlist">
             <p v-show="!ifCreateSonglist" class="noSonglist">暂无歌单</p>
-            <div v-for="item in createSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage(item.id,item.name)">
+            <div v-for="item in createSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage(item.id)">
                 <img :src="item.coverImgUrl">
                 <div class="songlist_info_p">
                     <p>{{item.name}}</p><br>
@@ -42,7 +42,7 @@
         </div>
         <div class="songlist">
             <p v-show="!ifStarSonglist" class="noSonglist">暂无歌单</p>
-            <div v-for="item in starSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage(item.id,item.name)">
+            <div v-for="item in starSonglist" :key="item.id" class="songlist_info" @click="toSonglistPage(item.id)">
                 <img :src="item.coverImgUrl">
                 <div class="songlist_info_p">
                     <p>{{item.name}}</p><br>
@@ -101,13 +101,12 @@ export default class MySongList extends Vue {
         this.modifySonglistId = songlistId;
     }
     //跳转到歌单详情页，传递歌单id
-    toSonglistPage(id: number,name: string): void{
+    toSonglistPage(id: number): void{
         const songlistId = id.toString();
         this.$router.push({
             name:'songlist',
             params:{
                 id:songlistId,
-                name:name
             }
         })
     }

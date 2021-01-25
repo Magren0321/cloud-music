@@ -24,5 +24,6 @@ export default class Find extends Vue {
 </script>
 
 <style scoped>
-
+.wrap{
+}
 </style>

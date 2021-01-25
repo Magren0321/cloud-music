@@ -169,6 +169,12 @@ p{
   color: #fff;
   font-weight: bold;
   font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp:2; /**文本限制两行 */
+  word-break:break-all;  /**单词内的断句 */
+  display:-webkit-box; /**webkit-line-clamp设置的必要 */
+  -webkit-box-orient:vertical; /**webkit-line-clamp设置的必要 */
 }
 #creatorName{
   color: #fff;

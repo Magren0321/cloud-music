@@ -4,7 +4,7 @@
           <p>推荐歌单</p>
       </div>
       <div class="songList">
-        <div v-for="(item,i) in songList" :key='i' class="songItem">
+        <div v-for="(item,i) in songList" :key='i' class="songItem" @click="clickSonglist(item.id)"> 
           <img :src='item.picUrl'>
           <p>{{item.name}}</p>
         </div>
@@ -34,7 +34,16 @@ export default class RecommendedPlaylist extends Vue {
       })
     }
   }
-
+  //歌单点击
+  clickSonglist(id: number): void{
+    const songlistId = id.toString();
+    this.$router.push({
+        name:'songlist',
+        params:{
+            id:songlistId,
+        }
+    })
+  }
 }
 </script>
 
@@ -45,6 +54,9 @@ export default class RecommendedPlaylist extends Vue {
   background-color: #fff;
   border-radius: 20px;
 }
+p{
+  margin: 0;
+}
 .songList{
   margin-top: 10px;
   display: flex;
@@ -54,12 +66,21 @@ export default class RecommendedPlaylist extends Vue {
   padding: 5px;
   flex: 0 0 33.3%;
 }
+.title p{
+  padding: 5px 0 0 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
 img{
   width: 100%;
   border-radius: 15px;
 }
-p{
-  padding: 0;
-  margin: 0;
+.songList p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp:2; /**文本限制两行 */
+  word-break:break-all;  /**单词内的断句 */
+  display:-webkit-box; /**webkit-line-clamp设置的必要 */
+  -webkit-box-orient:vertical; /**webkit-line-clamp设置的必要 */
 }
 </style>
