@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
+import api from '@/api/index';
 @Component
 export default class FindNav extends Vue {
   category = [{
@@ -30,8 +30,13 @@ export default class FindNav extends Vue {
     name:"私人FM"
   }
   ]
+  
   tabClick(id: number): void{
-    console.log(id)
+    if(id == 2){
+      api.getRecommendSong().then((res: any)=>{
+        console.log(res)
+      })
+    }
   }
 }
 </script>

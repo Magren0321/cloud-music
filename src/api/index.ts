@@ -136,8 +136,17 @@ export default{
      */
     getRecommend(limit: number){
         return axios({
-            url: config.getRecommend,
+            url: config.getRecommend + '?limit'+limit,
             method: 'get'
         })
     },
+    /**
+     * 获取每日推荐歌曲，需要登录
+     */
+    getRecommendSong(){
+        return axios({
+            url: config.getRecommendSong,
+            method: 'get'
+        })
+    }
 }
