@@ -5,9 +5,9 @@
         <v-icon medium>mdi-format-list-bulleted</v-icon>
       </div>
       <ul class="nav-list">
-        <router-link to="/my" @click="changeTab('my')">我的</router-link>
-        <router-link to="/find" @click="changeTab('find')">发现</router-link>
-        <router-link to="/movie" @click="changeTab('movie')">视频</router-link>
+        <router-link to="/my">我的</router-link>
+        <router-link to="/find">发现</router-link>
+        <router-link to="/movie">视频</router-link>
       </ul>
       <div class="magnify">
         <v-icon medium>mdi-magnify</v-icon>
@@ -24,28 +24,12 @@ import { Component, Vue} from 'vue-property-decorator';
 
 @Component
 export default class Home extends Vue {
-  isMy = true;
-  isFind = false;
-  isMovie = false;
-  tab = 'my';
-  //点击后更改样式
-  changeTab(res: string): void{
-    if(res=='my'){
-      this.isMy = true;
-      this.isFind = false;
-      this.isMovie = false;
-    }else if(res=='find'){
-      this.isMy = false;
-      this.isFind = true;
-      this.isMovie = false;
-    }else if(res=='movie'){
-      this.isMy = false;
-      this.isFind = false;
-      this.isMovie = true;
+  created(){
+    //从localStorage中判断用户是否登录过
+     if(localStorage.getItem('accountUid')!=null){
+       this.$store.commit('LOGIN_STATE',true);
     }
-    this.tab = res;
   }
-
 }
 </script>
 

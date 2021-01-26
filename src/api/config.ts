@@ -16,6 +16,7 @@ export const getLyric = '/lyric'; //获取歌曲歌词
 
 // ================= 发现页面 ===========================
 export const getBanner = '/banner?type=1'; //获取banner
-export const getPersonalRecommend = '/recommend/resource' //获取用户每日推荐歌单（需要登录）
-export const getRecommend = '/personalized' //获取推荐歌单
-export const getRecommendSong = '/recommend/songs' //获取每日推荐歌曲（需要登录）
+export const getPersonalRecommend = '/recommend/resource'; //获取用户每日推荐歌单（需要登录）
+export const getRecommend = '/personalized'; //获取推荐歌单
+export const getRecommendSong = '/recommend/songs'; //获取每日推荐歌曲（需要登录）
+export const getTopListDetail = '/toplist/detail'; //获取排行榜概要

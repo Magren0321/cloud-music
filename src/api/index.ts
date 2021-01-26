@@ -136,7 +136,7 @@ export default{
      */
     getRecommend(limit: number){
         return axios({
-            url: config.getRecommend + '?limit'+limit,
+            url: config.getRecommend + '?limit='+limit,
             method: 'get'
         })
     },
@@ -148,5 +148,14 @@ export default{
             url: config.getRecommendSong,
             method: 'get'
         })
-    }
+    },
+    /**
+     * 获取排行榜概要（用于发现页）
+     */
+    getTopListDetail(){
+        return axios({
+            url: config.getTopListDetail,
+            method: 'get'
+        })
+    },
 }

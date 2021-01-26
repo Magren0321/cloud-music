@@ -10,6 +10,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import api from '@/api/index';
+
 @Component
 export default class FindNav extends Vue {
   category = [{
@@ -34,7 +35,10 @@ export default class FindNav extends Vue {
   tabClick(id: number): void{
     if(id == 2){
       api.getRecommendSong().then((res: any)=>{
-        console.log(res)
+        this.$store.commit('SHOW_PLAYPAGE',true)
+        this.$store.commit('SONG_ID',res.data.recommend[0].id)
+        this.$store.commit('SONG_LIST',JSON.stringify(res.data.recommend))
+        this.$store.commit("SONG_INDEX",1);
       })
     }
   }

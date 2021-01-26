@@ -38,7 +38,6 @@ export default class MyHead extends Vue {
      if(localStorage.getItem('accountUid')!=null){
        this.name = localStorage.getItem('nickname');
        this.avatar = localStorage.getItem('avatarUrl')
-       this.$store.commit('LOGIN_STATE',true);
     }
   }
   

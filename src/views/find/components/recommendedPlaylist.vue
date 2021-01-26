@@ -25,7 +25,11 @@ export default class RecommendedPlaylist extends Vue {
     if(this.$store.getters.LOGIN_STATE){
       api.getPersonalRecommend().then((res:object|any)=>{
         for(let i = 0; i<6;i++){
-          this.songList.push(res.data.recommend[i]);
+          if(res.data.recommend[i]!=undefined){
+            this.songList.push(res.data.recommend[i]);
+          }else{
+            break;
+          }
         }
       })
     }else{

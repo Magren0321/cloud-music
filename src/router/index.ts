@@ -15,20 +15,21 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'Home',
     component: Home,
+    redirect: '/my', //路由重定向到/my
     children: [
       {
         path:'/find',
         name:'find',
         component: find
       },{
-        path: '/my',
-        name: 'my',
-        component: my
-      },{
         path: '/movie',
         name: 'movie',
         component: movie
-      }
+      },{
+        path: '/my',
+        name: 'my',
+        component: my
+      },
     ]
   },
   {
