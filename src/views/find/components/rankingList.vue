@@ -2,7 +2,7 @@
   <div class="wrap">
       <div class="title">
           <p id='title'>排行榜</p>
-          <v-btn rounded small outlined id='moreBtn'>more</v-btn>
+          <v-btn rounded small outlined id='moreBtn' @click='toRankingPage()'>more</v-btn>
       </div>
 
       <div class="course-container">
@@ -39,13 +39,11 @@ export default class RankingList extends Vue {
   
   swiperList: any = [];
 
-  //
+  //获取排行概要
   mounted(){
       api.getTopListDetail().then((res: any)=>{
-         for(let i = 0; i<res.data.list.length; i++){
-           if(res.data.list[i].tracks.length!=0){
-             this.swiperList.push(res.data.list[i]);
-           }
+         for(let i = 0; i<4; i++){
+           this.swiperList.push(res.data.list[i]); 
          }
       })
   }
@@ -60,6 +58,13 @@ export default class RankingList extends Vue {
             }
         })
     }
+    
+    //跳转到排行榜页面
+    toRankingPage(): void{
+      this.$router.push({
+        path:'/ranking'
+      })
+    }
 }
 </script>
 
@@ -68,7 +73,7 @@ export default class RankingList extends Vue {
   width:95%;
   margin-left: 2.5%;
   background-color: #fff;
-  border-radius: 20px;
+  border-radius: 15px;
   margin-top: 10px;
 }
 p{
@@ -103,7 +108,7 @@ p{
   display: flex;
   margin-left: 10px;
   margin-right: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.38);
   width: 95%;
 }

@@ -20,3 +20,6 @@ export const getPersonalRecommend = '/recommend/resource'; //获取用户每日�
 export const getRecommend = '/personalized'; //获取推荐歌单
 export const getRecommendSong = '/recommend/songs'; //获取每日推荐歌曲（需要登录）
 export const getTopListDetail = '/toplist/detail'; //获取排行榜概要
+
+// ================= 榜单页面 ===========================
+export const getTopList = '/toplist'; //获取所有榜单

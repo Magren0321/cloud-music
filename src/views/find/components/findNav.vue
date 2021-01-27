@@ -33,7 +33,9 @@ export default class FindNav extends Vue {
   ]
   
   tabClick(id: number): void{
-    if(id == 2){
+    if(id == 1){
+      this.toRankingPage();
+    }else if(id == 2){
       api.getRecommendSong().then((res: any)=>{
         this.$store.commit('SHOW_PLAYPAGE',true)
         this.$store.commit('SONG_ID',res.data.recommend[0].id)
@@ -42,6 +44,13 @@ export default class FindNav extends Vue {
       })
     }
   }
+
+  //跳转到排行榜页面
+    toRankingPage(): void{
+      this.$router.push({
+        path:'/ranking'
+      })
+    }
 }
 </script>
 

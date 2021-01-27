@@ -1,12 +1,12 @@
 <template>
   <div>
-    
+    xxx
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
+import api from '@/api/index';
 
 @Component({
   components: {
@@ -14,7 +14,11 @@ import { Component, Vue } from 'vue-property-decorator';
   },
 })
 export default class Ranking extends Vue {
-  
+  mounted(){
+    api.getTopListDetail().then((res: any)=>{
+      console.log(res)
+    })
+  }
 }
 </script>
 

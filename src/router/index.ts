@@ -7,6 +7,7 @@ const SongListInfo = () => import('../views/songListInfo/songListInfo.vue');
 const find = () => import('../views/find/find.vue');
 const my = () => import('../views/my/my.vue');
 const movie = () => import('../views/movie/movie.vue');
+const ranking = () => import('../views/ranking/ranking.vue');
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,10 @@ const routes: Array<RouteConfig> = [
     path:'/songlist',
     name:'songlist',
     component: SongListInfo
+  },{
+    path:'/ranking',
+    name:'rank',
+    component: ranking
   },
 ]
 

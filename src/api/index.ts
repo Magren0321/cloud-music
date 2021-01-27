@@ -158,4 +158,13 @@ export default{
             method: 'get'
         })
     },
+    /**
+     * 获取所有榜单
+     */
+    getTopList(){
+        return axios({
+            url: config.getTopList,
+            method: 'get'
+        })
+    },
 }
