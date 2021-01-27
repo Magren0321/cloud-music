@@ -5,9 +5,9 @@
         <v-icon medium>mdi-format-list-bulleted</v-icon>
       </div>
       <ul class="nav-list">
-        <router-link to="/my">我的</router-link>
-        <router-link to="/find">发现</router-link>
-        <router-link to="/movie">视频</router-link>
+        <router-link to="/my" replace>我的</router-link>
+        <router-link to="/find" replace>发现</router-link>
+        <router-link to="/movie" replace>视频</router-link>
       </ul>
       <div class="magnify">
         <v-icon medium>mdi-magnify</v-icon>
@@ -39,7 +39,7 @@ export default class Home extends Vue {
   height: 100%;
 }
 .content{
-  margin-bottom: 90px;
+  margin-bottom: 70px;
 }
 .tab{
   display: flex;

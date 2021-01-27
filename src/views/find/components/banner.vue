@@ -1,7 +1,6 @@
 <template>
   <div class="wrap">
     <v-carousel
-    cycle
     hide-delimiters
     show-arrows-on-hover
     :show-arrows="false"
@@ -26,7 +25,7 @@ import api from '@/api/index';
 @Component
 export default class Banner extends Vue {
     banner = [];
-
+    isActive = false;
     //获取banner数据
     mounted(){
       api.getBanner().then((res:object|any)=>{

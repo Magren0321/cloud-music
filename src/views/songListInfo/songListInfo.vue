@@ -229,7 +229,7 @@ p{
   text-overflow: ellipsis;
 }
 .songListScroll{
-  margin-bottom: 90px;
+  margin-bottom: 70px;
 }
 
 </style>
