@@ -26,6 +26,8 @@
 # 运行
 首先请根据[网易云音乐api](https://github.com/Binaryify/NeteaseCloudMusicApi)文档配置后台，接着将接口地址填入配置文件（vue.config.js）中。
 
+接着开始运行项目 :rocket:
+
 > npm install 
 
 > npm run serve
