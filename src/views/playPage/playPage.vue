@@ -414,14 +414,7 @@ export default class PlayPage extends Vue {
   height: 35vh;
   width: 35vh;
   border: 6vh solid #000000; /*border: 1px solid #000000;*/
-  -webkit-border-radius: 50%;
   border-radius: 50%;
-  transition-property: all;
-  transition-duration: 1s;
-  -webkit-transition-property: -webkit-transform;
-  -webkit-transition-duration: 1s;
-  -moz-transition-property: -moz-transform;
-  -moz-transition-duration: 1s;
   -webkit-animation: rotate 10s linear infinite;
   -moz-animation: rotate 10s linear infinite;
   -o-animation: rotate 10s linear infinite;
