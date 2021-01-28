@@ -353,7 +353,6 @@ export default class PlayPage extends Vue {
     moveLyric(index: number){
       let top = this.midHeight - index * 42
       if (top > 0) {
-        // top 不能为正数
         top = 0
       }
       this.marginTop = top + 'px'
