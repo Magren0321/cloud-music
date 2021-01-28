@@ -31,9 +31,6 @@ export default{
     [types.IS_PLAYING](state:object|any,isPlaying: boolean){
         state.isPlaying = isPlaying;
     },
-    [types.MODE](state:object|any,mode: string){
-        state.mode = mode;
-    },
     [types.SHOW_LYRIC](state:object|any,show: boolean){
         state.showLyric = show;
     },
