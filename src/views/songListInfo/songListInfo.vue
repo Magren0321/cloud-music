@@ -142,7 +142,7 @@ p{
   line-height: 40px;
   margin-left: 10px;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 20px;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;

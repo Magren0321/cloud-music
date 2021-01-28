@@ -1,5 +1,25 @@
 <template>
   <div class="wrap">
+    <v-dialog
+      v-model="dialog"
+    >
+    <v-card>
+      <v-card-title class="headline grey lighten-2">
+          是否删除歌单
+        </v-card-title>
+      
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="red"
+            text
+            @click="deleteSonglist()"
+          >
+            确认
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div v-for="item in choose" :key="item.id" class="btdiv">
       <v-btn text width="100%" height="100%" @click="clickTab(item.id)"> 
           <p>{{item.name}}</p>
@@ -23,6 +43,24 @@ export default class ModifySonglistDialog extends Vue {
   @Prop()
   private id!: number;
 
+  dialog = false;
+  sure = false;
+
+  deleteSonglist(): void{
+    this.dialog = false;
+    if(this.isStar == false){
+        api.deleteSonglist(this.id).then((res)=>{
+          console.log('删除歌单');
+          this.$router.go(0);
+        })
+      }else{
+        api.subscribeSonglist(this.id,2).then((res)=>{
+          console.log('取消歌单收藏');
+          this.$router.go(0)
+        })
+      }
+  }
+
   choose = [
     {
       name:'分享',
@@ -44,17 +82,7 @@ export default class ModifySonglistDialog extends Vue {
     }else if(id == 2){
       console.log('编辑歌单信息')
     }else if(id == 3){
-      if(this.isStar == false){
-        api.deleteSonglist(this.id).then((res)=>{
-          console.log('删除歌单'+ res);
-          this.$router.go(0);
-        })
-      }else{
-        api.subscribeSonglist(this.id,1).then((res)=>{
-          console.log('取消歌单收藏'+ res);
-          this.$router.go(0)
-        })
-      }
+      this.dialog = true;
     }
   }
 
