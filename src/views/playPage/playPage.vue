@@ -79,9 +79,9 @@
 
     <div class="control">
        <v-btn icon color="#fff" @click="changeMode()">
-        <v-icon size="4vh" color="#DFD6D4" v-show="$store.getters.MODE == 'random'">mdi-shuffle-variant</v-icon>
-        <v-icon size="4vh" color="#DFD6D4" v-show="$store.getters.MODE == 'order'">mdi-swap-horizontal</v-icon>
-        <v-icon size="4vh" color="#DFD6D4" v-show="$store.getters.MODE == 'loop'">mdi-repeat-once</v-icon>
+        <v-icon size="4vh" color="#DFD6D4" v-show="this.mode == 'random'">mdi-shuffle-variant</v-icon>
+        <v-icon size="4vh" color="#DFD6D4" v-show="this.mode == 'order'">mdi-swap-horizontal</v-icon>
+        <v-icon size="4vh" color="#DFD6D4" v-show="this.mode == 'loop'">mdi-repeat-once</v-icon>
        </v-btn>
        <v-btn icon color="#fff" @click="changeSong(-1)">
         <v-icon size="5vh" color="#DFD6D4" >mdi-skip-previous-outline</v-icon>
@@ -114,6 +114,7 @@ import api from '@/api/index';
 export default class PlayPage extends Vue {
     title = '';
     songImg = require("@/assets/like.png");
+    mode = 'order'; //播放模式
     playingTime = '0:00'; //正在播放的时间
     endTime = '0:00'; //结束时间
     totalDuration = 0; //总时长（时间戳)
@@ -129,6 +130,7 @@ export default class PlayPage extends Vue {
     lyricArray: any = []; //歌词Array
     marginTop = '0px' //记录滚动
     midHeight = 0; //歌词中线
+   
 
     //隐藏播放组件
     hidePlayPage(): void{
@@ -172,7 +174,6 @@ export default class PlayPage extends Vue {
           if(this.$store.getters.SONG_LIST!=''){
             this.songList = JSON.parse(this.$store.getters.SONG_LIST); //获取播放歌曲所在的歌单
           }
-          this.$store.commit("SHOW_PLAYPAGE",true); //显示播放页面
           this.$store.commit('SHOW_SONGTAB',true); //显示下方播放栏
           this.$store.commit("IS_PLAYING",true);
         }else{
@@ -237,12 +238,12 @@ export default class PlayPage extends Vue {
     }
     //切换模式
     changeMode(): void{
-      if(this.$store.getters.MODE == 'order'){
-        this.$store.commit("MODE",'random');
-      }else if(this.$store.getters.MODE == 'random'){
-        this.$store.commit("MODE",'loop')
+      if(this.mode == 'order'){
+        this.mode = 'random';
+      }else if(this.mode == 'random'){
+        this.mode = 'loop';
       }else{
-        this.$store.commit('MODE','order')
+        this.mode = 'order'
       }
     }
     //当歌曲结束的时候
@@ -253,14 +254,14 @@ export default class PlayPage extends Vue {
         (this.$refs.songAudio as any).play();
         return;
       }
-      if(this.$store.getters.MODE == 'order'){
+      if(this.mode == 'order'){
         if(this.$store.getters.SONG_INDEX == this.songList.length){
           this.$store.commit("SONG_INDEX",1);
         }else{
           this.$store.commit("SONG_INDEX",this.$store.getters.SONG_INDEX+1);
         }
         this.$store.commit('SONG_ID',(this.songList[this.$store.getters.SONG_INDEX-1] as any).id);
-      }else if(this.$store.getters.MODE == 'random'){
+      }else if(this.mode == 'random'){
         let random = Math.floor(Math.random()*this.songList.length+1) //取1到歌单长度的一个随机数，然后Math.floor向下取整
         if(random == this.$store.getters.SONG_INDEX){
           random = Math.floor(Math.random()*this.songList.length+1)
