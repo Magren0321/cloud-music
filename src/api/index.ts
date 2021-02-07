@@ -1,4 +1,4 @@
-import axios from '../utils/request'
+import axios from './request'
 import * as config from './config'
 
 export default{
