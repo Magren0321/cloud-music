@@ -488,8 +488,7 @@ ul{
   margin-right: 5%;
   list-style: none;
   text-align: center;
-  /* ul元素的margin-top值变化，在0.7秒内完成 */
-  transition: margin-top 0.7s;
+  transition: margin-top 1s;
 }
 li{
   height: 28px;

@@ -15,11 +15,9 @@ const clickoutside: DirectiveOptions = {
         }
       }
       // 给当前元素绑定个私有变量，方便在unbind中可以解除事件监听
-      
       el.vueClickOutside = documentHandler
       document.addEventListener('click', documentHandler)
     },
-    update () { },
     unbind (el: any, binding) {
       // 解除事件监听
       document.removeEventListener('click', el.vueClickOutside)
