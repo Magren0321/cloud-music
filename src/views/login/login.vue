@@ -34,6 +34,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import api from '@/api/index';
+import cookie from '@/utils/cookie';
 
 @Component({
   components: {
@@ -52,7 +53,7 @@ export default class Login extends Vue {
   login(){
     this.isLogining = true;
     const phoneNumber: number = parseInt(this.phone);
-    api.phoneLogin(phoneNumber,this.password).then((res: object|any)=>{
+    api.phoneLogin(phoneNumber,this.password).then((res: any)=>{
       this.timer = setTimeout(()=>{
         this.isLogining = false;
       },2000);
@@ -64,10 +65,10 @@ export default class Login extends Vue {
         const userId = accountInfo.userId
         this.$store.commit('LOGIN_STATE',true);
         this.$store.commit('ACCOUNT_UID',userId);
-        //使用LocalStorage存入用户信息；
-        localStorage.setItem('avatarUrl', accountInfo.avatarUrl)
-        localStorage.setItem('nickname', accountInfo.nickname)
-        localStorage.setItem('accountUid', userId)
+        //使用cookie存入用户信息；
+        cookie.setCookie('avatarUrl',accountInfo.avatarUrl,3);
+        cookie.setCookie('nickname', accountInfo.nickname,3);
+        cookie.setCookie('accountUid', userId,3);
         this.$store.commit('LOGIN_STATE',true); //更改状态为已经登录
         this.loginSuccess();
       }

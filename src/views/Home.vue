@@ -21,13 +21,14 @@
 
 <script lang="ts">
 import { Component, Vue} from 'vue-property-decorator';
-
+import cookie from '@/utils/cookie';
 @Component
 export default class Home extends Vue {
   created(){
-    //从localStorage中判断用户是否登录过
-     if(localStorage.getItem('accountUid')!=null){
+    //从cookie中判断用户是否登录过
+     if(cookie.getCookie('accountUid')!=null){
        this.$store.commit('LOGIN_STATE',true);
+       
     }
   }
 }

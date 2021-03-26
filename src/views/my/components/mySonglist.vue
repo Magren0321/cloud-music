@@ -64,6 +64,7 @@ import api from '@/api/index'
 import createDialog from './createSonglistDialog.vue'
 import clickoutside from '@/utils/clickoutside'
 import modifySonglistDialog from './modifySonglistDialog.vue'
+import cookie from '@/utils/cookie';
 
 @Component({
     directives:{
@@ -113,9 +114,9 @@ export default class MySongList extends Vue {
 
     mounted () {
         //获取用户歌单
-        const uid = localStorage.getItem('accountUid');
+        const uid = cookie.getCookie('accountUid');
         if(uid!=null){
-            api.getSonglist(uid).then((res: object|any)=>{
+            api.getSonglist(uid).then((res: any)=>{
                 this.likeSonglist = res.data.playlist[0];
                 for(let i = 1;i<res.data.playlist.length;i++){
                     if(res.data.playlist[i].subscribed == false){

@@ -28,7 +28,7 @@ export default class Banner extends Vue {
     isActive = false;
     //获取banner数据
     mounted(){
-      api.getBanner().then((res:object|any)=>{
+      api.getBanner().then((res:any)=>{
         this.banner = res.data.banners; 
       })
     }

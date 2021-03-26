@@ -23,7 +23,7 @@ export default class RecommendedPlaylist extends Vue {
   mounted(){
     //获取推荐歌单
     if(this.$store.getters.LOGIN_STATE){
-      api.getPersonalRecommend().then((res:object|any)=>{
+      api.getPersonalRecommend().then((res:any)=>{
         for(let i = 0; i<6;i++){
           if(res.data.recommend[i]!=undefined){
             this.songList.push(res.data.recommend[i]);
@@ -33,7 +33,7 @@ export default class RecommendedPlaylist extends Vue {
         }
       })
     }else{
-      api.getRecommend(6).then((res:object|any)=>{
+      api.getRecommend(6).then((res:any)=>{
         this.songList = res.data.result;
       })
     }

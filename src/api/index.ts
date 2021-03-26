@@ -17,7 +17,7 @@ export default{
      * 获取用户歌单
      * @param uid 用户uid
      */
-    getSonglist(uid:number|string|any): Promise<Object>{
+    getSonglist(uid:number|string): Promise<Object>{
         return axios({
             url:config.getSonglist+"?uid="+uid,
             method:'get'

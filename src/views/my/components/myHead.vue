@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
+import cookie from '@/utils/cookie';
 @Component({
   components: {
     
@@ -20,7 +20,7 @@ export default class MyHead extends Vue {
   name: string|null = "请登录";
 
   isLogin(): void{
-    if(localStorage.getItem('accountUid')!=null){
+    if(cookie.getCookie('accountUid')!=null){
       console.log("已经登录");
     }else{
       this.toLoginPage();
@@ -34,10 +34,10 @@ export default class MyHead extends Vue {
   }
 
   mounted () {
-    //从localStorage中读取账户信息
-     if(localStorage.getItem('accountUid')!=null){
-       this.name = localStorage.getItem('nickname');
-       this.avatar = localStorage.getItem('avatarUrl')
+    //从cookie中读取信息
+     if(cookie.getCookie('accountUid')!=null){
+       this.name = cookie.getCookie('nickname');
+       this.avatar = cookie.getCookie('avatarUrl')
     }
   }
   
