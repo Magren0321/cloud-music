@@ -161,7 +161,7 @@ export default class PlayPage extends Vue {
     //弹出歌单并且设置歌单高度
     changeSheet(){
       this.sheet = true;
-      this.scrollHeight = (this.$refs.wrap as any).offsetHeight/5*3-48;
+      this.scrollHeight = (this.$refs.wrap as HTMLElement).offsetHeight/5*3-48;
     }
     //当选中的歌曲改变时候先检测是否可用
     @Watch('$store.getters.SONG_ID')
@@ -287,7 +287,7 @@ export default class PlayPage extends Vue {
     }
     //显示歌词
     showLyric(): void{
-      this.midHeight = (this.$refs.coverImg as any).offsetHeight/2; //获取歌词中线高度
+      this.midHeight = (this.$refs.coverImg as HTMLElement).offsetHeight/2; //获取歌词中线高度
       this.$store.commit("SHOW_LYRIC",true); //显示歌词
     }
     //获取歌词

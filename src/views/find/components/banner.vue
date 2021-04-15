@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" :style="{height:divHeight}">
     <v-carousel
     hide-delimiters
     show-arrows-on-hover
@@ -10,8 +10,8 @@
       v-for="(item, i) in banner"
       :key="i"
     >
-        <div class="bannerImg" @click="clickBanner(i)">
-            <img :src="item.pic">
+        <div class="bannerImg" @click="clickBanner(i)" > 
+            <img :src="item.pic" ref="bimg">
         </div>
     </v-carousel-item>
   </v-carousel>
@@ -19,19 +19,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import api from '@/api/index';
+import { Component,  Prop,  Vue } from 'vue-property-decorator';
 
 @Component
 export default class Banner extends Vue {
-    banner = [];
-    isActive = false;
-    //获取banner数据
-    mounted(){
-      api.getBanner().then((res:any)=>{
-        this.banner = res.data.banners; 
-      })
-    }
+    
+    @Prop()
+    banner: any;
+
+    divHeight = 'auto';
+    
+
     //点击banner触发事件
     clickBanner(index: number): void{
         if((this.banner[index] as any).url!= null){
@@ -48,15 +46,16 @@ export default class Banner extends Vue {
 
 <style scoped>
 .wrap{
-    padding-top: 55px;
+  margin-top: 50px;
 }
 .bannerImg{
-    display: flex;
-    justify-content: center; 
-    align-items: center;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
 }
 .bannerImg img{
-    width: 95%;
-    border-radius: 15px;
+  width: 95%;
+  border-radius: 15px;
 }
 </style>
+

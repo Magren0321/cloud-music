@@ -38,8 +38,8 @@ export default class FindNav extends Vue {
     }else if(id == 2){
       api.getRecommendSong().then((res: any)=>{
         this.$store.commit('SHOW_PLAYPAGE',true)
-        this.$store.commit('SONG_ID',res.data.recommend[0].id)
-        this.$store.commit('SONG_LIST',JSON.stringify(res.data.recommend))
+        this.$store.commit('SONG_LIST',JSON.stringify(res.data.data.dailySongs))
+        this.$store.commit('SONG_ID',res.data.data.dailySongs[0].id)
         this.$store.commit("SONG_INDEX",1);
       })
     }

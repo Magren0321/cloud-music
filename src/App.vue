@@ -9,6 +9,7 @@
   </v-app>
 </template>
 
+
 <script lang="ts">
 import Vue from 'vue';
 import playPage from '@/views/playPage/playPage.vue'

@@ -1,12 +1,7 @@
 //删除或者添加cookie
 const setCookie = (name: string, value: string, expires: number)=>{
     if (typeof value != 'undefined') {
-        //如果值为null, 删除cookie
-        if (value === null) {
-            value = '';
-            expires = -1;
-            return;
-        }
+        //如果expires值为-1, 删除cookie
         //设置有效期
         let date;
         date = new Date();

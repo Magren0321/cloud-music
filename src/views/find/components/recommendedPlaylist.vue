@@ -4,7 +4,7 @@
           <p>推荐歌单</p>
       </div>
       <div class="songList">
-        <div v-for="(item,i) in songList" :key='i' class="songItem" @click="clickSonglist(item.id)"> 
+        <div v-for="(item,i) in recommendlist" :key='i' class="songItem" @click="clickSonglist(item.id)"> 
           <img :src='item.picUrl'>
           <p>{{item.name}}</p>
         </div>
@@ -13,31 +13,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import api from '@/api/index';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class RecommendedPlaylist extends Vue {
-  songList: any = [];
 
-  mounted(){
-    //获取推荐歌单
-    if(this.$store.getters.LOGIN_STATE){
-      api.getPersonalRecommend().then((res:any)=>{
-        for(let i = 0; i<6;i++){
-          if(res.data.recommend[i]!=undefined){
-            this.songList.push(res.data.recommend[i]);
-          }else{
-            break;
-          }
-        }
-      })
-    }else{
-      api.getRecommend(6).then((res:any)=>{
-        this.songList = res.data.result;
-      })
-    }
-  }
+  @Prop() 
+  recommendlist: any;
+
   //歌单点击
   clickSonglist(id: number): void{
     const songlistId = id.toString();

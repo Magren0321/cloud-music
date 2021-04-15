@@ -206,11 +206,10 @@ export default class MySongList extends Vue {
     display: flex;
 }
 .songlist_info img{
-    width: 20%;
     padding-bottom: 10px;
     margin-left: 20px;
-    max-width:50px;
-    max-height: 60px;
+    width:50px;
+    height: 60px;
 }
 .songlist_info_p{
     flex: 9;

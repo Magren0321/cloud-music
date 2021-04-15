@@ -1,52 +1,48 @@
 <template>
   <div class="wrap">
-      <div class="title">
-          <p id='title'>排行榜</p>
-          <v-btn rounded small outlined id='moreBtn' @click='toRankingPage()'>more</v-btn>
-      </div>
+    <div class="title">
+        <p id='title'>排行榜</p>
+        <v-btn rounded small outlined id='moreBtn' @click='toRankingPage()'>more</v-btn>
+    </div>
 
-      <div class="course-container">
+    <div class="course-container">
       <div class="swiper-con">
         <div
-          v-for="(swp,swip) of swiperList"
+          v-for="(swp,swip) in ranklist"
           :key="swip"
           class="swip-item"
           @click="toSonglistPage(swp.id)"
         >
         <div class="rankList">
+
           <div class="coverImg">
             <img :src="swp.coverImgUrl">
           </div>
+
           <div class="list">
             <div v-for="(item,index) of swp.tracks" :key="index">
               <p>{{index+1}}.{{item.first}} - {{item.second}}</p>
             </div>
           </div>
+          
         </div>
         </div>
       </div>
-      </div>
+    </div>
 
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import api from '@/api/index';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
 
 @Component
 export default class RankingList extends Vue {
-  
-  swiperList: any = [];
 
-  //获取排行概要
-  mounted(){
-      api.getTopListDetail().then((res: any)=>{
-         for(let i = 0; i<4; i++){
-           this.swiperList.push(res.data.list[i]); 
-         }
-      })
-  }
+  @Prop()
+  ranklist: any ;
+  
 
   //跳转到歌单详情页，传递歌单id
     toSonglistPage(id: number): void{

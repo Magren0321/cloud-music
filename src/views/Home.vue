@@ -28,7 +28,6 @@ export default class Home extends Vue {
     //从cookie中判断用户是否登录过
      if(cookie.getCookie('accountUid')!=null){
        this.$store.commit('LOGIN_STATE',true);
-       
     }
   }
 }
