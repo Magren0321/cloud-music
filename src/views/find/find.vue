@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch} from 'vue-property-decorator';
 import banner from './components/banner.vue'
 import findNav from './components/findNav.vue'
 import recommendedPlaylist from './components/recommendedPlaylist.vue';
@@ -54,11 +54,9 @@ export default class Find extends Vue {
           }else{
             this.recommendlist = res3.data.result;
           }
-
           this.finish = true;
       }))
     }
-
 }
 </script>
 

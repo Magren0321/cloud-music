@@ -1,8 +1,9 @@
 <template>
-  <div class="wrap" :style="{height:divHeight}">
+  <div class="wrap" :style={height:divHeight}>
     <v-carousel
     hide-delimiters
     show-arrows-on-hover
+    cycle
     :show-arrows="false"
     height="100%"
   >
@@ -27,8 +28,7 @@ export default class Banner extends Vue {
     @Prop()
     banner: any;
 
-    divHeight = 'auto';
-    
+    divHeight = ''
 
     //点击banner触发事件
     clickBanner(index: number): void{
@@ -40,6 +40,14 @@ export default class Banner extends Vue {
         }else{
             console.log('这是个mv')
         }
+    }
+
+    created(){
+       setTimeout(() => {
+          this.$nextTick(() => {
+            this.divHeight = (this.$refs.bimg as HTMLElement[])[0].offsetHeight+'px';
+          })
+      },100)
     }
 }
 </script>
