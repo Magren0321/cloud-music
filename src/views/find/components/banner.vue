@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap" :style={height:divHeight}>
+  <div class="wrap">
     <v-carousel
     hide-delimiters
     show-arrows-on-hover
@@ -28,8 +28,6 @@ export default class Banner extends Vue {
     @Prop()
     banner: any;
 
-    divHeight = ''
-
     //点击banner触发事件
     clickBanner(index: number): void{
         if((this.banner[index] as any).url!= null){
@@ -42,19 +40,17 @@ export default class Banner extends Vue {
         }
     }
 
-    created(){
-       setTimeout(() => {
-          this.$nextTick(() => {
-            this.divHeight = (this.$refs.bimg as HTMLElement[])[0].offsetHeight+'px';
-          })
-      },100)
+    mounted(){
+      console.log((this.$refs.bimg as HTMLElement[])[0].offsetHeight)
     }
 }
+
 </script>
 
 <style scoped>
 .wrap{
   margin-top: 50px;
+  height: calc(100vw*6/16);
 }
 .bannerImg{
   display: flex;
