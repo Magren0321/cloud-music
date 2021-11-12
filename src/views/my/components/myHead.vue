@@ -1,8 +1,8 @@
 <template>
   <div class="wrap" @click="isLogin">
     <img :src="avatar">
-    <div class="account-name">
-        <p id="name">{{name}}</p>
+    <div class="account-name" >
+        <p id="name" >{{name}}</p>
     </div>
   </div>
 </template>

@@ -39,10 +39,6 @@ export default class Banner extends Vue {
             console.log('这是个mv')
         }
     }
-
-    mounted(){
-      console.log((this.$refs.bimg as HTMLElement[])[0].offsetHeight)
-    }
 }
 
 </script>
